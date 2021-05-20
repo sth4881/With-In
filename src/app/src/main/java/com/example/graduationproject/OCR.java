@@ -2,6 +2,7 @@ package com.ocr;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -32,15 +33,18 @@ public class OCR {
             
             JSONObject image = new JSONObject();
             image.put("format", "jpg");
-            image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
-
-//            FileInputStream inputStream = new FileInputStream("YOUR_IMAGE_FILE");
-//            byte[] buffer = new byte[inputStream.available()];
-//            inputStream.read(buffer);
-//            inputStream.close();
-//            image.put("data", buffer);
+            image.put("name", "ocr");
+            // Object Storage의 URL을 불러와서 OCR 적용
+            // image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
             
-            image.put("name", "demo");
+            // 저장소 내부의 파일을 불러와서 OCR 적용
+            FileInputStream inputStream = new FileInputStream("/Users/SJH/eclipse-workspace/GraduationProject/src/com/ocr/sample.jpg");
+            byte[] buffer = new byte[inputStream.available()];
+            image.put("data", buffer);
+            inputStream.read(buffer);
+            inputStream.close();
+            
+            // 다수의 이미지를 처리
             JSONArray images = new JSONArray();
             images.put(image);
             json.put("images", images);
