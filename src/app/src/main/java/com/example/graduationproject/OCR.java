@@ -1,4 +1,4 @@
-package com.ocr;
+package com.example.graduationproject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
