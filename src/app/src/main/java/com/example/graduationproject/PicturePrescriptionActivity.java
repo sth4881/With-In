@@ -20,10 +20,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class PicturePrescriptionActivity extends AppCompatActivity {
     private Button btnConfirm;
@@ -58,7 +67,10 @@ public class PicturePrescriptionActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String ocrResult = ApplyOCR();
+                Intent intent = new Intent(PicturePrescriptionActivity.this, ApplyOCRActivity.class);
+                intent.putExtra("ocrResult", ocrResult);
+                startActivity(intent);
             }
         });
 
@@ -149,5 +161,88 @@ public class PicturePrescriptionActivity extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
+    }
+
+    private String ApplyOCR() { // PicturePrescriptionActivity를 통해서 촬영된 사진을 매개변수로 가져오든지 할것
+        String apiURL = "https://0e5de5a9aebe4da1bcd5ef84a78605f0.apigw.ntruss.com/custom/v1/6604/ebe336381e3a156e85375e32f99ee0a86a480f2747219998eff226d9234ee616/infer";
+        String secretKey = "YnBEZ2dMTVljTkxrQ0FmS0Z2bll2SXdoenF4Z01KTXM=";
+
+        StringBuilder sb = new StringBuilder();
+
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(apiURL);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setUseCaches(false);
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    conn.setRequestProperty("X-OCR-SECRET", secretKey);
+
+                    JSONObject json = new JSONObject();
+                    json.put("version", "V2");
+                    json.put("requestId", UUID.randomUUID().toString());
+                    json.put("timestamp", System.currentTimeMillis());
+
+                    JSONObject image = new JSONObject();
+                    image.put("format", "jpg");
+                    image.put("name", "ocr");
+                    // Object Storage의 URL을 불러와서 OCR 적용
+                    image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
+
+                    //            // 저장소 내부의 파일을 불러와서 OCR 적용
+                    //            FileInputStream inputStream = new FileInputStream("/Users/SJH/eclipse-workspace/GraduationProject/src/com/ocr/sample.jpg");
+                    //            byte[] buffer = new byte[inputStream.available()];
+                    //            image.put("data", buffer);
+                    //            inputStream.read(buffer);
+                    //            inputStream.close();
+
+                    // 다수의 이미지를 처리
+                    JSONArray images = new JSONArray();
+                    images.put(image);
+                    json.put("images", images);
+
+                    // JSON Request 전송
+                    String postParams = json.toString();
+                    DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+                    wr.writeBytes(postParams);
+                    wr.flush();
+                    wr.close();
+
+                    // JSON Response 처리
+                    int responseCode = conn.getResponseCode();
+                    BufferedReader br;
+                    if (responseCode == 200) {
+                        br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    } else {
+                        br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    }
+
+                    // JSON Response 데이터 가공해서 내용 출력
+                    String jsonString = br.readLine();
+                    JSONObject jsonObj = new JSONObject(jsonString);
+                    JSONObject jsonImages = jsonObj.getJSONArray("images").getJSONObject(0);
+                    JSONArray jsonFields = jsonImages.getJSONArray("fields");
+
+                    String result = "ABC\n";
+                    for (int i = 0; i < jsonFields.length(); i++) {
+                        JSONObject obj = jsonFields.getJSONObject(i);
+                        String name = obj.getString("name");
+                        String inferText = obj.getString("inferText");
+                        // System.out.println(name+" : "+inferText);
+                        sb.append(result).append(name).append(" : ").append(inferText).append("\n");
+                    }
+                    br.close();
+                } catch (Exception e) {
+                    // System.out.println(e);
+                    String error = e.toString();
+                    sb.append(error);
+                }
+            }
+        }.start();
+        return sb.toString();
     }
 }
