@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.btnPicturePrescription:
-                        Intent intent = new Intent(MainActivity.this, PicturePrescriptionActivity.class);
+                        Intent intent = new Intent(MainActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.btnOCR:
-                        Intent intent = new Intent(MainActivity.this, ApplyOCRActivity.class);
+                        Intent intent = new Intent(MainActivity.this, CheckOCRResultActivity.class);
                         startActivity(intent);
                 }
             }

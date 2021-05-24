@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-public class PicturePrescriptionActivity extends AppCompatActivity {
+public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
     private Button btnConfirm;
     private Button btnReSize;
     private Button btnRetake;
@@ -48,7 +48,7 @@ public class PicturePrescriptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picture_prescription_activty);
+        setContentView(R.layout.activity_picture_prescription_and_apply_ocr_activty);
 
         img = (ImageView)findViewById(R.id.img);
 
@@ -67,10 +67,7 @@ public class PicturePrescriptionActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ocrResult = ApplyOCR();
-                Intent intent = new Intent(PicturePrescriptionActivity.this, ApplyOCRActivity.class);
-                intent.putExtra("ocrResult", ocrResult);
-                startActivity(intent);
+                ApplyOCR();
             }
         });
 
@@ -163,11 +160,9 @@ public class PicturePrescriptionActivity extends AppCompatActivity {
         }
     }
 
-    private String ApplyOCR() { // PicturePrescriptionActivity를 통해서 촬영된 사진을 매개변수로 가져오든지 할것
+    private void ApplyOCR() { // PicturePrescriptionActivity를 통해서 촬영된 사진을 매개변수로 가져오든지 할것
         String apiURL = "https://0e5de5a9aebe4da1bcd5ef84a78605f0.apigw.ntruss.com/custom/v1/6604/ebe336381e3a156e85375e32f99ee0a86a480f2747219998eff226d9234ee616/infer";
         String secretKey = "YnBEZ2dMTVljTkxrQ0FmS0Z2bll2SXdoenF4Z01KTXM=";
-
-        StringBuilder sb = new StringBuilder();
 
         new Thread() {
             @Override
@@ -227,22 +222,28 @@ public class PicturePrescriptionActivity extends AppCompatActivity {
                     JSONObject jsonImages = jsonObj.getJSONArray("images").getJSONObject(0);
                     JSONArray jsonFields = jsonImages.getJSONArray("fields");
 
-                    String result = "ABC\n";
+                    StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < jsonFields.length(); i++) {
                         JSONObject obj = jsonFields.getJSONObject(i);
                         String name = obj.getString("name");
                         String inferText = obj.getString("inferText");
                         // System.out.println(name+" : "+inferText);
-                        sb.append(result).append(name).append(" : ").append(inferText).append("\n");
+                        sb.append(name).append(" : ").append(inferText).append("\n");
                     }
+
+                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
+                    intent.putExtra("result", sb.toString());
+                    startActivity(intent);
+
                     br.close();
                 } catch (Exception e) {
                     // System.out.println(e);
                     String error = e.toString();
-                    sb.append(error);
+                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
+                    intent.putExtra("result", error);
+                    startActivity(intent);
                 }
             }
         }.start();
-        return sb.toString();
     }
 }
