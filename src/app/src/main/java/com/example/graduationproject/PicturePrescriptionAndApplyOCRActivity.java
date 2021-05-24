@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -99,7 +100,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         }
     }
 
-    // startActivityForResult를 실행한 후에 다시 현재 Activity로 돌아와서 결과값을 처리해주는 메소드(현재 사용 X)
+    // startActivityForResult를 실행한 후에 다시 현재 Activity로 돌아와서 결과값을 처리해주는 메소드
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -132,7 +133,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         }
     }
 
-    // 촬영한 사진을 jpg형식의 이미지 파일로 저장하는 메소드
+    // 촬영한 사진을 외부 저장소에 jpg형식의 이미지 파일로 저장하는 메소드
     private File createImageFile() throws IOException {
         String imageFileName = new SimpleDateFormat("yyyyMMdd_HHmmss_").format(new Date());
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -160,7 +161,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         }
     }
 
-    private void ApplyOCR() { // PicturePrescriptionActivity를 통해서 촬영된 사진을 매개변수로 가져오든지 할것
+    private void ApplyOCR() {
         String apiURL = "https://0e5de5a9aebe4da1bcd5ef84a78605f0.apigw.ntruss.com/custom/v1/6604/ebe336381e3a156e85375e32f99ee0a86a480f2747219998eff226d9234ee616/infer";
         String secretKey = "YnBEZ2dMTVljTkxrQ0FmS0Z2bll2SXdoenF4Z01KTXM=";
 
@@ -188,12 +189,13 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     // Object Storage의 URL을 불러와서 OCR 적용
                     image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
 
-                    //            // 저장소 내부의 파일을 불러와서 OCR 적용
-                    //            FileInputStream inputStream = new FileInputStream("/Users/SJH/eclipse-workspace/GraduationProject/src/com/ocr/sample.jpg");
-                    //            byte[] buffer = new byte[inputStream.available()];
-                    //            image.put("data", buffer);
-                    //            inputStream.read(buffer);
-                    //            inputStream.close();
+                    // 저장소 내부의 파일을 불러와서 OCR 적용
+                    // FileInputStream("경로") 경로에서 해당 파일을 찾아 열고, 파일을 읽을 수 있는 스트림 객체 inputStream 생성
+//                    FileInputStream inputStream = new FileInputStream("/Users/SJH/eclipse-workspace/GraduationProject/src/com/ocr/sample.jpg");
+//                    byte[] buffer = new byte[inputStream.available()];
+//                    image.put("data", buffer);
+//                    inputStream.read(buffer);
+//                    inputStream.close();
 
                     // 다수의 이미지를 처리
                     JSONArray images = new JSONArray();
@@ -222,22 +224,28 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     JSONObject jsonImages = jsonObj.getJSONArray("images").getJSONObject(0);
                     JSONArray jsonFields = jsonImages.getJSONArray("fields");
 
-                    StringBuilder sb = new StringBuilder();
+                    String[] medicineCode = new String[13];
+                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
                     for (int i = 0; i < jsonFields.length(); i++) {
                         JSONObject obj = jsonFields.getJSONObject(i);
                         String name = obj.getString("name");
                         String inferText = obj.getString("inferText");
-                        // System.out.println(name+" : "+inferText);
-                        sb.append(name).append(" : ").append(inferText).append("\n");
+
+                        if(name.equals("doctor_name")) { // doctor_name에서 인식된 필기체 제거
+                            String[] temp = inferText.split(" ", 2);
+                            inferText = temp[0];
+                        }
+                        else if(inferText.length() > 9 && inferText.charAt(9) == ' ') { // 약학코드만 추출해서 medicineCode 배열에 삽입
+                            String[] temp = inferText.split(" ", 2);
+                            medicineCode[i] = temp[0];
+                        }
+                        else if(inferText.equals("")) inferText=null;
+                        intent.putExtra(name, inferText);
                     }
-
-                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
-                    intent.putExtra("result", sb.toString());
+                    intent.putExtra("medicineCode", medicineCode);
                     startActivity(intent);
-
                     br.close();
                 } catch (Exception e) {
-                    // System.out.println(e);
                     String error = e.toString();
                     Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
                     intent.putExtra("result", error);
