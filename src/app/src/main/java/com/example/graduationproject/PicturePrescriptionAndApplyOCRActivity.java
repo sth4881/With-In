@@ -42,6 +42,8 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
 
     private ImageView img;
 
+    private File file;
+
     private String imageFilePath;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -68,7 +70,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApplyOCR();
+                ApplyOCR(file);
             }
         });
 
@@ -150,6 +152,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
             File imageFile = null;
             try {
                 imageFile = createImageFile();
+                file = imageFile;
             } catch(IOException e) {
                 e.printStackTrace();
             }
@@ -161,7 +164,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         }
     }
 
-    private void ApplyOCR() {
+    private void ApplyOCR(File file) {
         String apiURL = "https://0e5de5a9aebe4da1bcd5ef84a78605f0.apigw.ntruss.com/custom/v1/6604/ebe336381e3a156e85375e32f99ee0a86a480f2747219998eff226d9234ee616/infer";
         String secretKey = "YnBEZ2dMTVljTkxrQ0FmS0Z2bll2SXdoenF4Z01KTXM=";
 
@@ -187,15 +190,18 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     image.put("format", "jpg");
                     image.put("name", "ocr");
                     // Object Storage의 URL을 불러와서 OCR 적용
-                    image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
+                    // image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
 
                     // 저장소 내부의 파일을 불러와서 OCR 적용
-                    // FileInputStream("경로") 경로에서 해당 파일을 찾아 열고, 파일을 읽을 수 있는 스트림 객체 inputStream 생성
-//                    FileInputStream inputStream = new FileInputStream("/Users/SJH/eclipse-workspace/GraduationProject/src/com/ocr/sample.jpg");
-//                    byte[] buffer = new byte[inputStream.available()];
-//                    image.put("data", buffer);
-//                    inputStream.read(buffer);
-//                    inputStream.close();
+                    FileInputStream inputStream = new FileInputStream(file); // FileInputStream("경로") 경로에서 파일 내용을 바이트 단위로 읽어들이기 위한 스트림 객체
+                    byte[] buffer = new byte[inputStream.available()];
+                    try {
+                        image.put("data", buffer);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // inputStream.read(buffer);
+                    inputStream.close();
 
                     // 다수의 이미지를 처리
                     JSONArray images = new JSONArray();

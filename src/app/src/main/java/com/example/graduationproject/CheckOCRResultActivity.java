@@ -58,13 +58,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                 medicine_name12+"\n"+
                 medicine_name13+"\n";
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(result);
-        for(int i=0; i<medicineCode.length; i++) {
-            sb.append(medicineCode[i]).append("\n");
-        }
-
         textView = (TextView)findViewById(R.id.textview);
-        textView.setText(sb.toString());
+        textView.setText(result);
     }
 }
