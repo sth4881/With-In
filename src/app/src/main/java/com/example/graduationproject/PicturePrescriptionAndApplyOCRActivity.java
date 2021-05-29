@@ -15,6 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,9 +26,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -40,9 +42,9 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
     private Button btnReSize;
     private Button btnRetake;
 
-    private ImageView img;
+    private Bitmap bitmapImage;
 
-    private File file;
+    private ImageView img;
 
     private String imageFilePath;
 
@@ -70,7 +72,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApplyOCR(file);
+                ApplyOCR();
             }
         });
 
@@ -114,15 +116,17 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                         if(Build.VERSION.SDK_INT>=29) { // API 29 버전 이상의 경우
                             ImageDecoder.Source src = ImageDecoder.createSource(getContentResolver(), Uri.fromFile(file));
                             try {
-                                Bitmap bitmap = ImageDecoder.decodeBitmap(src);
-                                img.setImageBitmap(bitmap);
+//                                Bitmap bitmap = ImageDecoder.decodeBitmap(src);
+                                bitmapImage = ImageDecoder.decodeBitmap(src);
+                                img.setImageBitmap(bitmapImage);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         } else { // API 29 버전 미만일 경우
                             try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
-                                img.setImageBitmap(bitmap);
+//                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
+                                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
+                                img.setImageBitmap(bitmapImage);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -135,13 +139,13 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         }
     }
 
-    // 촬영한 사진을 외부 저장소에 jpg형식의 이미지 파일로 저장하는 메소드
+    // 촬영한 이미지가 저장되기 위한 빈 그릇을 만들어주는 메소드
     private File createImageFile() throws IOException {
-        String imageFileName = new SimpleDateFormat("yyyyMMdd_HHmmss_").format(new Date());
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        String imageFileName = new SimpleDateFormat("yyyyMMdd_HHmmss_").format(new Date()); // 저장될 이미지 파일 이름
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES); // 이미지가 저장될 폴더 이름
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir); // 빈 파일 생성
 
-        imageFilePath = image.getAbsolutePath();
+        imageFilePath = image.getAbsolutePath(); // 위에서 정의한 이미지 파일 이름과 폴더 이름을 통해서 만들어진 절대경로를 가져옴
         return image;
     }
 
@@ -149,14 +153,14 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
     private void requestTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // File imageFile = null;
             File imageFile = null;
             try {
                 imageFile = createImageFile();
-                file = imageFile;
             } catch(IOException e) {
                 e.printStackTrace();
             }
-            if(imageFile != null) {
+            if(imageFile != null) { // 카메라 어플을 통해서 빈 파일에 촬영된 이미지가 저장되었다면
                 Uri imageUri = FileProvider.getUriForFile(this, getPackageName(), imageFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -164,7 +168,17 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         }
     }
 
-    private void ApplyOCR(File file) {
+    // 안드로이드 OS 상에서 이미지를 JSON 형식으로 넘겨주기 위해서
+    // 비트맵 이미지를 Base64 방식으로 인코딩해서 반환해주는 메소드
+    private String getStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArr = byteArrayOutputStream.toByteArray();
+        String result = Base64.encodeToString(byteArr, Base64.DEFAULT);
+        return result;
+    }
+
+    private void ApplyOCR() {
         String apiURL = "https://0e5de5a9aebe4da1bcd5ef84a78605f0.apigw.ntruss.com/custom/v1/6604/ebe336381e3a156e85375e32f99ee0a86a480f2747219998eff226d9234ee616/infer";
         String secretKey = "YnBEZ2dMTVljTkxrQ0FmS0Z2bll2SXdoenF4Z01KTXM=";
 
@@ -189,19 +203,15 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     JSONObject image = new JSONObject();
                     image.put("format", "jpg");
                     image.put("name", "ocr");
-                    // Object Storage의 URL을 불러와서 OCR 적용
+                    // Object Storage의 URL을 불러와서 OCR 적용하는 방식
                     // image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
 
-                    // 저장소 내부의 파일을 불러와서 OCR 적용
-                    FileInputStream inputStream = new FileInputStream(file); // FileInputStream("경로") 경로에서 파일 내용을 바이트 단위로 읽어들이기 위한 스트림 객체
-                    byte[] buffer = new byte[inputStream.available()];
-                    try {
-                        image.put("data", buffer);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    // inputStream.read(buffer);
-                    inputStream.close();
+                    // 외부 저장소의 파일을 불러와서 OCR 적용하는 방식
+                    // 안드로이드(자바)에서는 파일을 읽고 쓰는 작업을 FileInputStream, FileOutputStream을 통해서 수행
+                    // 2021.05.29 안드로이드 OS에서 JSON 형식으로 이미지를 보내주기 위해서는 비트맵을 Base64 방식으로 인코딩해서 보내줘야만 request가 제대로 전달되는것을 깨달음
+                    // 2021.05.29 CLOVA 홈페이지에 나와있는 예시 코드의 경우(FileInputStream 방식) 데스크탑 환경에서는 request가 올바르게 전달되지만, 안드로이드 OS에서는 invalid request error
+                    String encodedImage = getStringFromBitmap(bitmapImage);
+                    image.put("data", encodedImage);
 
                     // 다수의 이미지를 처리
                     JSONArray images = new JSONArray();
@@ -245,7 +255,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                             String[] temp = inferText.split(" ", 2);
                             medicineCode[i] = temp[0];
                         }
-                        else if(inferText.equals("")) inferText=null;
+                        else if(inferText.equals("")) inferText=null; // 값이 비어있으면 null로 채우기
                         intent.putExtra(name, inferText);
                     }
                     intent.putExtra("medicineCode", medicineCode);
