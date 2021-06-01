@@ -8,19 +8,12 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/btnPicturePrescription"
+        android:id="@+id/btnPicturePrescriptionAndOCR"
         android:text="처방전 촬영"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="150dp"/>
-
-    <Button
-        android:id="@+id/btnOCR"
-        android:text="OCR 적용"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
 
     <Button
         android:id="@+id/btnCheckPrescription"

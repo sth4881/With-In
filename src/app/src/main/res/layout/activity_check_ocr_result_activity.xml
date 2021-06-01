@@ -5,10 +5,75 @@
     android:layout_height="match_parent"
     tools:context=".CheckOCRResultActivity">
 
+    <!--처방전 텍스트 표시-->
     <TextView
-        android:id="@+id/textview"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="처 방 전"
+        android:textSize="30sp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"/>
+
+    <!--방문한 병원 및 약국 설명 기록-->
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:textSize="18sp"/>
+
+    <!--OCR을 통해서 검출된 약 목록-->
+    <ListView
+        android:id="@+id/listMedicine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textInfo"/>
+
+    <!--DUR 텍스트 표시-->
+    <TextView
+        android:id="@+id/textDUR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listMedicine"
+        android:text="⚠의약품 안전성 정보(DUR)⚠"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+    <!--병용금기, 연령금기, 임부금기 약 표시-->
+    <ScrollView
+        android:id="@+id/scrollTaboo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center" />
+        android:layout_below="@+id/textDUR">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/combiTaboo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/ageTaboo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:gravity="center_horizontal" />
+
+
+            <TextView
+                android:id="@+id/pregnantTaboo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:gravity="center_horizontal" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -240,7 +240,6 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     JSONObject jsonImages = jsonObj.getJSONArray("images").getJSONObject(0);
                     JSONArray jsonFields = jsonImages.getJSONArray("fields");
 
-                    String[] medicineCode = new String[13];
                     Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
                     for (int i = 0; i < jsonFields.length(); i++) {
                         JSONObject obj = jsonFields.getJSONObject(i);
@@ -251,14 +250,9 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                             String[] temp = inferText.split(" ", 2);
                             inferText = temp[0];
                         }
-                        else if(inferText.length() > 9 && inferText.charAt(9) == ' ') { // 약학코드만 추출해서 medicineCode 배열에 삽입
-                            String[] temp = inferText.split(" ", 2);
-                            medicineCode[i] = temp[0];
-                        }
                         else if(inferText.equals("")) inferText=null; // 값이 비어있으면 null로 채우기
                         intent.putExtra(name, inferText);
                     }
-                    intent.putExtra("medicineCode", medicineCode);
                     startActivity(intent);
                     br.close();
                 } catch (Exception e) {

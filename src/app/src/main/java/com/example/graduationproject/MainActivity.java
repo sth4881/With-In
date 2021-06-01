@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnPicturePrescription;
-    private Button btnOCR;
+    private Button btnPicturePrescriptionAndApplyOCR;
 
     private Button btnCheckPrescription;
     private Button btnCheckDoseHistory;
@@ -29,27 +28,15 @@ public class MainActivity extends AppCompatActivity {
         btnMedicine = findViewById(R.id.btnMedicine);
         btnMyPage = findViewById(R.id.btnMyPage);
 
-        btnPicturePrescription = findViewById(R.id.btnPicturePrescription);
-        btnPicturePrescription.setOnClickListener(new View.OnClickListener() {
+        btnPicturePrescriptionAndApplyOCR = findViewById(R.id.btnPicturePrescriptionAndOCR);
+        btnPicturePrescriptionAndApplyOCR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.btnPicturePrescription:
+                    case R.id.btnPicturePrescriptionAndOCR:
                         Intent intent = new Intent(MainActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
                         startActivity(intent);
                         break;
-                }
-            }
-        });
-
-        btnOCR = findViewById(R.id.btnOCR);
-        btnOCR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.btnOCR:
-                        Intent intent = new Intent(MainActivity.this, CheckOCRResultActivity.class);
-                        startActivity(intent);
                 }
             }
         });
