@@ -76,13 +76,13 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
             }
         });
 
-        btnReSize = findViewById(R.id.btnReSize);
-        btnReSize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        btnReSize = findViewById(R.id.btnReSize);
+//        btnReSize.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         btnRetake = findViewById(R.id.btnRetake);
         btnRetake.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +153,6 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
     private void requestTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // File imageFile = null;
             File imageFile = null;
             try {
                 imageFile = createImageFile();

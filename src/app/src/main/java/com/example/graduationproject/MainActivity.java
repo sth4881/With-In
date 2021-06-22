@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
         // 미구현 버튼
         btnCheckPrescription = findViewById(R.id.btnCheckPrescription);
-        btnCheckDoseHistory = findViewById(R.id.btnCheckDoseHistory);
-        btnAlarm = findViewById(R.id.btnAlarm);
+//        btnCheckDoseHistory = findViewById(R.id.btnCheckDoseHistory);
+//        btnAlarm = findViewById(R.id.btnAlarm);
         btnMedicine = findViewById(R.id.btnMedicine);
-        btnMyPage = findViewById(R.id.btnMyPage);
+//        btnMyPage = findViewById(R.id.btnMyPage);
 
         btnPicturePrescriptionAndApplyOCR = findViewById(R.id.btnPicturePrescriptionAndOCR);
         btnPicturePrescriptionAndApplyOCR.setOnClickListener(new View.OnClickListener() {

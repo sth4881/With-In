@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="260dp"/>
 
     <Button
         android:id="@+id/btnCheckPrescription"
@@ -22,19 +22,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <Button
-        android:id="@+id/btnCheckDoseHistory"
-        android:text="투약 내역 조회"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+<!--    <Button-->
+<!--        android:id="@+id/btnCheckDoseHistory"-->
+<!--        android:text="투약 내역 조회"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center" />-->
 
-    <Button
-        android:id="@+id/btnAlarm"
-        android:text="복용 알람 설정"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+<!--    <Button-->
+<!--        android:id="@+id/btnAlarm"-->
+<!--        android:text="복용 알람 설정"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center" />-->
 
     <Button
         android:id="@+id/btnMedicine"
@@ -43,10 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <Button
-        android:id="@+id/btnMyPage"
-        android:text="내 정보 변경"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+<!--    <Button-->
+<!--        android:id="@+id/btnMyPage"-->
+<!--        android:text="내 정보 변경"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center" />-->
 </LinearLayout>

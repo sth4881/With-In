@@ -16,22 +16,30 @@
         android:text="확인"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/btnReSize"
+        android:layout_marginLeft="118dp"
         android:layout_alignParentBottom="true" />
 
-    <Button
-        android:id="@+id/btnReSize"
-        android:text="화면 크기 조정"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+<!--    <Button-->
+<!--        android:id="@+id/btnConfirm"-->
+<!--        android:text="확인"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_toLeftOf="@+id/btnReSize"-->
+<!--        android:layout_alignParentBottom="true" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnReSize"-->
+<!--        android:text="화면 크기 조정"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_alignParentBottom="true" />-->
 
     <Button
         android:id="@+id/btnRetake"
         android:text="재촬영"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/btnReSize"
+        android:layout_toRightOf="@+id/btnConfirm"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>
