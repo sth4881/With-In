@@ -21,8 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitle"
-        android:textSize="12sp"
-        android:gravity="center"/>
+        android:textSize="18sp"/>
 
     <!--처방받은 약 목록 표시-->
     <ListView
@@ -55,21 +54,21 @@
 
             <!--병용금기, 연령금기, 임부금기 약 표시-->
             <TextView
-                android:id="@+id/combiTaboo"
+                android:id="@+id/tvCombiProhibition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:gravity="center_horizontal" />
 
             <TextView
-                android:id="@+id/ageTaboo"
+                android:id="@+id/tvAgeProhibition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:gravity="center_horizontal" />
 
             <TextView
-                android:id="@+id/pregnantTaboo"
+                android:id="@+id/tvPregnantProhibition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"

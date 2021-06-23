@@ -8,21 +8,20 @@ import android.database.sqlite.SQLiteDatabase;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AgeTabooAdapter {
+public class CombiProhibitionAdapter {
     private SQLiteDatabase db;
-    private final Context context;
+    private final Context mContext;
     private final DBHelper dbHelper;
 
-
-    protected static final String TABLE_NAME = "연령금기";
+    protected static final String TABLE_NAME = "병용금기";
     protected static final String COLUMN_NAME = "제품코드";
 
-    public AgeTabooAdapter(Context context) {
-        dbHelper = new DBHelper(context);
-        this.context = context;
+    public CombiProhibitionAdapter(Context context) {
+        this.mContext = context;
+        dbHelper = new DBHelper(mContext);
     }
 
-    public AgeTabooAdapter create() throws SQLException {
+    public CombiProhibitionAdapter create() throws SQLException {
         try {
             dbHelper.createDB();
         } catch (IOException e) {
@@ -31,7 +30,7 @@ public class AgeTabooAdapter {
         return this;
     }
 
-    public AgeTabooAdapter open() throws SQLException {
+    public CombiProhibitionAdapter open() throws SQLException {
         try {
             dbHelper.openDB();
             dbHelper.close();
@@ -42,15 +41,15 @@ public class AgeTabooAdapter {
         return this;
     }
 
-    public Cursor getAgeTabooData(ArrayList<String> code) {
-        try {
-            String sql ="SELECT * FROM 연령금기";
-            Cursor cursor = db.rawQuery(sql, null);
-            return cursor;
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
+//    public ArrayList<ArrayList<String> getCombiProhibitionData(ArrayList<String> medicineCode) {
+//        try {
+//            String sql ="SELECT * FROM 병용금기";
+//            Cursor cursor = db.rawQuery(sql, null);
+//            return cursor;
+//        } catch (SQLException sqlException) {
+//            throw sqlException;
+//        }
+//    }
 
     public void close() {
         dbHelper.close();

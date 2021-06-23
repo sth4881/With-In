@@ -3,48 +3,42 @@ package com.example.graduationproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
     private TextView tvInfo;
     private ListView lvInfo;
-    private TextView ageTaboo;
-    private TextView combiTaboo;
-    private TextView pregnantTaboo;
+    private TextView tvAgeProhibition;
+    private TextView tvCombiProhibition;
+    private TextView tvPregnantProhibition;
 
-    public Cursor ageTabooData, combiTabooData, pregnantTabooData;
+    public ArrayList<ArrayList<String>> ageProhibitionData, combiProhibitionData, pregnantProhibitionData;
 
-    private void loadDatabaseData(ArrayList<String> arr) {
-        AgeTabooAdapter ageTabooAdapter = new AgeTabooAdapter(getApplicationContext());
-        ageTabooAdapter.create();
-        ageTabooAdapter.open();
+    private void loadDatabaseData(ArrayList<String> medicineCode) {
+        AgeProhibitionAdapter ageProhibitionAdapter = new AgeProhibitionAdapter(getApplicationContext());
+        ageProhibitionAdapter.create();
+        ageProhibitionAdapter.open();
 
-        CombiTabooAdapter combiTabooAdapter = new CombiTabooAdapter(getApplicationContext());
-        combiTabooAdapter.create();
-        combiTabooAdapter.open();
+//        CombiProhibitionAdapter combiProhibitionAdapter = new CombiProhibitionAdapter(getApplicationContext());
+//        combiProhibitionAdapter.create();
+//        combiProhibitionAdapter.open();
 
-        PregnantTabooAdapter pregnantTabooAdapter = new PregnantTabooAdapter(getApplicationContext());
-        pregnantTabooAdapter.create();
-        pregnantTabooAdapter.open();
+        PregnantProhibitionAdapter pregnantProhibitionAdapter = new PregnantProhibitionAdapter(getApplicationContext());
+        pregnantProhibitionAdapter.create();
+        pregnantProhibitionAdapter.open();
 
-        ageTabooData = ageTabooAdapter.getAgeTabooData(arr);
-        combiTabooData = combiTabooAdapter.getCombiTabooData(arr);
-        pregnantTabooData = pregnantTabooAdapter.getPregnantTabooData(arr);
+        ageProhibitionData = ageProhibitionAdapter.getAgeProhibitionData(medicineCode);
+//        combiProhibitionData = combiProhibitionAdapter.getCombiProhibitionData(medicineCode);
+        pregnantProhibitionData = pregnantProhibitionAdapter.getPregnantProhibitionData(medicineCode);
 
-        ageTabooAdapter.close();
-        combiTabooAdapter.close();
-        pregnantTabooAdapter.close();
+        ageProhibitionAdapter.close();
+//        combiProhibitionAdapter.close();
+        pregnantProhibitionAdapter.close();
     }
 
     @Override
@@ -54,9 +48,9 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
         tvInfo = (TextView)findViewById(R.id.tvInfo);
         lvInfo = (ListView)findViewById(R.id.lvInfo);
-        ageTaboo = (TextView)findViewById(R.id.ageTaboo);
-        combiTaboo = (TextView)findViewById(R.id.combiTaboo);
-        pregnantTaboo = (TextView)findViewById(R.id.pregnantTaboo);
+        tvAgeProhibition = (TextView)findViewById(R.id.tvAgeProhibition);
+        tvCombiProhibition = (TextView)findViewById(R.id.tvCombiProhibition);
+        tvPregnantProhibition = (TextView)findViewById(R.id.tvPregnantProhibition);
 
         String user_name = getIntent().getStringExtra("user_name");
         String user_birthday = getIntent().getStringExtra("user_birthday");
@@ -84,16 +78,20 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
         // 처방전 기본 정보 텍스트뷰로 표시
         StringBuilder sb = new StringBuilder();
-        sb.append("환자 성명 : ").append(user_name);
-        sb.append("의료기관 명칭 : ").append(hospital_name);
-        sb.append("의료기관 전화번호 : ").append(hospital_call);
-        sb.append("처방 의료인의 성명 : ").append(doctor_name);
+        if(user_name != null)
+            sb.append("환자 성명 : ").append(user_name).append("\n");
+        if(hospital_name != null)
+            sb.append("의료기관 명칭 : ").append(hospital_name).append("\n");
+        if(hospital_call != null)
+            sb.append("의료기관 전화번호 : ").append(hospital_call).append("\n");
+        if(doctor_name != null)
+            sb.append("처방 의료인의 성명 : ").append(doctor_name).append("\n");
         if(pharmacy_name != null)
-            sb.append("조제기관 명칭 : ").append(pharmacy_name);
+            sb.append("조제기관 명칭 : ").append(pharmacy_name).append("\n");
         if(pharmacist_name != null)
-            sb.append("조제약사 성명 : ").append(pharmacist_name);
+            sb.append("조제약사 성명 : ").append(pharmacist_name).append("\n");
         if(compound_date != null)
-            sb.append("조제년월일 : ").append(compound_date);
+            sb.append("조제년월일 : ").append(compound_date).append("\n");
         tvInfo.setText(sb.toString());
         
         // 약 정보 리스트뷰로 표시
@@ -123,6 +121,8 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         ArrayAdapter<String > adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicineName);
         lvInfo.setAdapter(adapter);
 
-        loadDatabaseData(medicineCode);
+        // 처방전 양식이 아닌 경우 오류가 종료되는 것을 방지
+        if(medicineCode.size() > 0)
+            loadDatabaseData(medicineCode);
     }
 }
