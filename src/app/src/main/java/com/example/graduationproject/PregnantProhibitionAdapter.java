@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,24 +42,24 @@ public class PregnantProhibitionAdapter {
         return this;
     }
 
-    public ArrayList<ArrayList<String>> getPregnantProhibitionData(ArrayList<String> medicineCode) {
+    public ArrayList<ArrayList<String>> getPregnantProhibitionData(String[] medicineCode) {
         try {
-            Cursor[] cursor = new Cursor[medicineCode.size()];
-            for(int i=0; i<medicineCode.size(); i++) {
-                String sql = "SELECT * FROM 임부금기 WHERE 제품코드=" + medicineCode.get(i);
-                cursor[i] = db.rawQuery(sql, null);
-            }
+            String sql = "SELECT * FROM 임부금기 WHERE 제품코드=?";
+            Cursor cursor = db.rawQuery(sql, medicineCode);
 
             // 처방전에 적혀있는 약 중에서 임부금기에 해당하는 약의 개수만큼 생성
-            ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>(cursor.length);
-            for(int i=0; i<cursor.length; i++)
+            ArrayList<ArrayList<String>> arr = new ArrayList<ArrayList<String>>(cursor.getCount());
+            for(int i=0; i<cursor.getColumnCount(); i++)
                 arr.add(new ArrayList<String>());
 
             // 임부금기 테이블의 '제품코드', '제품명' 칼럼 데이터를 불러옴
-            for(int i=0; i<arr.size(); i++) {
-                arr.get(i).add(cursor[i].getString(0)); // 제품코드
-                arr.get(i).add(cursor[i].getString(1)); // 제품명
+            cursor.moveToFirst();
+            for(int i=0; i<cursor.getCount(); i++) {
+                arr.get(i).add(cursor.getString(0)); // 제품코드
+                arr.get(i).add(cursor.getString(1)); // 제품명
+                cursor.moveToNext();
             }
+
             return arr;
         } catch (SQLException sqlException) {
             throw sqlException;

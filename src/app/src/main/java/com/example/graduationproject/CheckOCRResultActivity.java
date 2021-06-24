@@ -19,10 +19,10 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
     public ArrayList<ArrayList<String>> ageProhibitionData, combiProhibitionData, pregnantProhibitionData;
 
-    private void loadDatabaseData(ArrayList<String> medicineCode) {
-        AgeProhibitionAdapter ageProhibitionAdapter = new AgeProhibitionAdapter(getApplicationContext());
-        ageProhibitionAdapter.create();
-        ageProhibitionAdapter.open();
+    private void loadDatabaseData(String[] medicineCode) {
+//        AgeProhibitionAdapter ageProhibitionAdapter = new AgeProhibitionAdapter(getApplicationContext());
+//        ageProhibitionAdapter.create();
+//        ageProhibitionAdapter.open();
 
 //        CombiProhibitionAdapter combiProhibitionAdapter = new CombiProhibitionAdapter(getApplicationContext());
 //        combiProhibitionAdapter.create();
@@ -32,11 +32,11 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         pregnantProhibitionAdapter.create();
         pregnantProhibitionAdapter.open();
 
-        ageProhibitionData = ageProhibitionAdapter.getAgeProhibitionData(medicineCode);
+//        ageProhibitionData = ageProhibitionAdapter.getAgeProhibitionData(medicineCode);
 //        combiProhibitionData = combiProhibitionAdapter.getCombiProhibitionData(medicineCode);
         pregnantProhibitionData = pregnantProhibitionAdapter.getPregnantProhibitionData(medicineCode);
 
-        ageProhibitionAdapter.close();
+//        ageProhibitionAdapter.close();
 //        combiProhibitionAdapter.close();
         pregnantProhibitionAdapter.close();
     }
@@ -111,10 +111,10 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         if(medicine_name13 != null) medicineName.add(medicine_name13);
 
         // 약 정보 데이터베이스 조회에 필요한 코드 목록 생성
-        ArrayList<String> medicineCode = new ArrayList<String>();
+        String[] medicineCode = new String[medicineName.size()];
         for(int i=0; i<medicineName.size(); i++) {
             String[] temp = medicineName.get(i).split(" ", 2);
-            medicineCode.add(temp[0]);
+            medicineCode[i] = temp[0];
         }
         
         // 처방전 내 인식된 정보를 ListView에 표시
@@ -122,7 +122,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         lvInfo.setAdapter(adapter);
 
         // 처방전 양식이 아닌 경우 오류가 종료되는 것을 방지
-        if(medicineCode.size() > 0)
+        if(medicineCode.length > 0)
             loadDatabaseData(medicineCode);
     }
 }
