@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -202,15 +201,16 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     JSONObject image = new JSONObject();
                     image.put("format", "jpg");
                     image.put("name", "ocr");
-                    // Object Storage의 URL을 불러와서 OCR 적용하는 방식
-                    // image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
 
                     // 외부 저장소의 파일을 불러와서 OCR 적용하는 방식
                     // 안드로이드(자바)에서는 파일을 읽고 쓰는 작업을 FileInputStream, FileOutputStream을 통해서 수행
                     // 2021.05.29 안드로이드 OS에서 JSON 형식으로 이미지를 보내주기 위해서는 비트맵을 Base64 방식으로 인코딩해서 보내줘야만 request가 제대로 전달되는것을 깨달음
                     // 2021.05.29 CLOVA 홈페이지에 나와있는 예시 코드의 경우(FileInputStream 방식) 데스크탑 환경에서는 request가 올바르게 전달되지만, 안드로이드 OS에서는 invalid request error
-                    String encodedImage = getStringFromBitmap(bitmapImage);
-                    image.put("data", encodedImage);
+//                    String encodedImage = getStringFromBitmap(bitmapImage);
+//                    image.put("data", encodedImage);
+
+                    // Object Storage의 URL을 불러와서 OCR 적용하는 방식
+                    image.put("url", "https://kr.object.ncloudstorage.com/bitbucket/sample.jpg"); // image should be public, otherwise, should use data
 
                     // 다수의 이미지를 처리
                     JSONArray images = new JSONArray();

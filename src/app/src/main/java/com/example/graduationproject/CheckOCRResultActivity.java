@@ -2,7 +2,6 @@ package com.example.graduationproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -74,7 +73,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         String medicine_name12 = getIntent().getStringExtra("medicine_name12");
         String medicine_name13 = getIntent().getStringExtra("medicine_name13");
 
-        // user_age 처리
+        // user_birthday를 이용한 user_age 처리
 
         // 처방전 기본 정보 텍스트뷰로 표시
         StringBuilder sb = new StringBuilder();
@@ -122,7 +121,20 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         lvInfo.setAdapter(adapter);
 
         // 처방전 양식이 아닌 경우 오류가 종료되는 것을 방지
-        if(medicineCode.length > 0)
-            loadDatabaseData(medicineCode);
+        if(medicineCode.length>0) loadDatabaseData(medicineCode);
+
+        // 임부금기 관련
+        StringBuilder sbPregnantProhibition = new StringBuilder();
+        sbPregnantProhibition.append("임부금기").append("\n");
+
+        int pregnantProhibitionDataSize = pregnantProhibitionData.size();
+        if(pregnantProhibitionDataSize == 0) sbPregnantProhibition.append("없음").append("\n");
+        else {
+            for (int i=0; i<pregnantProhibitionDataSize; i++) {
+                String drugName= pregnantProhibitionData.get(i).get(1);
+                sbPregnantProhibition.append(drugName).append("\n");
+            }
+        }
+        tvPregnantProhibition.setText(sbPregnantProhibition.toString());
     }
 }

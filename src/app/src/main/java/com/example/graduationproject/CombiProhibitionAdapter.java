@@ -1,12 +1,10 @@
 package com.example.graduationproject;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class CombiProhibitionAdapter {
     private SQLiteDatabase db;
