@@ -52,20 +52,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--병용금기, 연령금기, 임부금기 약 표시-->
-            <TextView
-                android:id="@+id/tvCombiProhibition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:gravity="center_horizontal" />
-
+            <!--연령금기, 병용금기, 임부금기 약 표시-->
             <TextView
                 android:id="@+id/tvAgeProhibition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:gravity="center_horizontal" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvCombiProhibition"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="12sp"-->
+<!--                android:gravity="center_horizontal" />-->
 
             <TextView
                 android:id="@+id/tvPregnantProhibition"
