@@ -52,9 +52,9 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picture_prescription_and_apply_ocr_activty);
+        //setContentView(R.layout.activity_picture_prescription_and_apply_ocr_activty);
 
-        img = (ImageView)findViewById(R.id.img);
+        //img = (ImageView)findViewById(R.id.img);
 
         // 카메라 및 외부 저장소 쓰기 권한 명시
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -66,14 +66,15 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
         }
 
         requestTakePictureIntent();
+        ApplyOCR();
 
-        btnConfirm = findViewById(R.id.btnConfirm);
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ApplyOCR();
-            }
-        });
+//        btnConfirm = findViewById(R.id.btnConfirm);
+//        btnConfirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ApplyOCR();
+//            }
+//        });
 
 //        btnReSize = findViewById(R.id.btnReSize);
 //        btnReSize.setOnClickListener(new View.OnClickListener() {
@@ -83,13 +84,13 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
 //            }
 //        });
 
-        btnRetake = findViewById(R.id.btnRetake);
-        btnRetake.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestTakePictureIntent();
-            }
-        });
+//        btnRetake = findViewById(R.id.btnRetake);
+//        btnRetake.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                requestTakePictureIntent();
+//            }
+//        });
     }
 
     // 권한 요청에 따른 사용자의 응답에 따라서 동작을 정의하는 메소드
@@ -115,17 +116,15 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                         if(Build.VERSION.SDK_INT>=29) { // API 29 버전 이상의 경우
                             ImageDecoder.Source src = ImageDecoder.createSource(getContentResolver(), Uri.fromFile(file));
                             try {
-//                                Bitmap bitmap = ImageDecoder.decodeBitmap(src);
                                 bitmapImage = ImageDecoder.decodeBitmap(src);
-                                img.setImageBitmap(bitmapImage);
+                                //img.setImageBitmap(bitmapImage);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         } else { // API 29 버전 미만일 경우
                             try {
-//                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
                                 bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
-                                img.setImageBitmap(bitmapImage);
+                                //img.setImageBitmap(bitmapImage);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
