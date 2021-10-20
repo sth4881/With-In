@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringJoiner;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
     private TextView tvInfo;
@@ -71,6 +72,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 //        tvCombiProhibition = (TextView)findViewById(R.id.tvCombiProhibition);
         tvPregnantProhibition = (TextView)findViewById(R.id.tvPregnantProhibition);
 
+        String visit_date = getIntent().getStringExtra("visit_date");
         String user_name = getIntent().getStringExtra("user_name");
         String user_rrn = getIntent().getStringExtra("user_rrn");
         String hospital_name = getIntent().getStringExtra("hospital_name");
@@ -93,11 +95,19 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         String medicine12 = getIntent().getStringExtra("medicine12");
         String medicine13 = getIntent().getStringExtra("medicine13");
 
+        StringBuilder sb = new StringBuilder();
+
+        // 방문 날짜 데이터 처리 및 표시
+        if(visit_date != null) {
+            visit_date = visit_date.replace(" ", "").replace("년", "년 ").replace("월", "월 ");
+            visit_date = visit_date.replace("일", "일 ").replace("-", "").replace("제", "");
+            sb.append("방문 날짜 : ").append(visit_date).append("\n");
+        }
+
         // 현재 년도와 user_rrn 정보를 이용한 user_age 처리
         String user_age = Integer.toString(getAmericanAge(user_rrn));
 
-        // 처방전 기본 정보 텍스트뷰로 표시
-        StringBuilder sb = new StringBuilder();
+        // 환자 성명, 나이, 병원명, 병원 전화번호, 의사 성명 표시
         if(user_name != null)
             sb.append("환자 성명(나이) : ").append(user_name).append("(만 ").append(user_age).append("세)").append("\n");
         if(hospital_name != null)
@@ -106,13 +116,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
             sb.append("의료기관 전화번호 : ").append(hospital_call).append("\n");
         if(doctor_name != null)
             sb.append("처방 의료인의 성명 : ").append(doctor_name).append("\n");
-        if(pharmacy_name != null)
-            sb.append("조제기관 명칭 : ").append(pharmacy_name).append("\n");
-        if(pharmacist_name != null)
-            sb.append("조제약사 성명 : ").append(pharmacist_name).append("\n");
-        if(compound_date != null)
-            sb.append("조제년월일 : ").append(compound_date).append("\n");
-        tvInfo.setText(sb.toString());
+        tvInfo.setText(sb.toString()); // 처방전 기본 정보 텍스트뷰로 표시
         
         // 약 정보 리스트뷰로 표시
         ArrayList<String> medicine = new ArrayList<String>();
