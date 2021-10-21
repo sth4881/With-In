@@ -37,13 +37,13 @@ import java.util.Date;
 import java.util.UUID;
 
 public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
-    private Button btnConfirm;
-    private Button btnReSize;
-    private Button btnRetake;
+//    private Button btnConfirm;
+//    private Button btnReSize;
+//    private Button btnRetake;
+//
+//    private ImageView img;
 
     private Bitmap bitmapImage;
-
-    private ImageView img;
 
     private String imageFilePath;
 
@@ -52,9 +52,9 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_picture_prescription_and_apply_ocr_activty);
-
-        //img = (ImageView)findViewById(R.id.img);
+//        setContentView(R.layout.activity_picture_prescription_and_apply_ocr_activty);
+//
+//        img = (ImageView)findViewById(R.id.img);
 
         // 카메라 및 외부 저장소 쓰기 권한 명시
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -65,7 +65,9 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_IMAGE_CAPTURE);
         }
 
+        // 사진 촬영으로 비트맵 이미지 만들기
         requestTakePictureIntent();
+        // 만들어진 비트맵 이미지에 OCR 적용
         ApplyOCR();
 
 //        btnConfirm = findViewById(R.id.btnConfirm);
@@ -75,7 +77,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
 //                ApplyOCR();
 //            }
 //        });
-
+//
 //        btnReSize = findViewById(R.id.btnReSize);
 //        btnReSize.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -83,7 +85,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
+//
 //        btnRetake = findViewById(R.id.btnRetake);
 //        btnRetake.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -167,14 +169,15 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
 
     // 안드로이드 OS 상에서 이미지를 JSON 형식으로 넘겨주기 위해서
     // 비트맵 이미지를 Base64 방식으로 인코딩해서 반환해주는 메소드
-    private String getStringFromBitmap(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] byteArr = byteArrayOutputStream.toByteArray();
-        String result = Base64.encodeToString(byteArr, Base64.DEFAULT);
-        return result;
-    }
+//    private String getStringFromBitmap(Bitmap bitmap) {
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+//        byte[] byteArr = byteArrayOutputStream.toByteArray();
+//        String result = Base64.encodeToString(byteArr, Base64.DEFAULT);
+//        return result;
+//    }
 
+    // OCR 적용 메소드
     private void ApplyOCR() {
         String apiURL = "https://0e5de5a9aebe4da1bcd5ef84a78605f0.apigw.ntruss.com/custom/v1/6604/ebe336381e3a156e85375e32f99ee0a86a480f2747219998eff226d9234ee616/infer";
         String secretKey = "YnBEZ2dMTVljTkxrQ0FmS0Z2bll2SXdoenF4Z01KTXM=";
