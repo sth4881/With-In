@@ -185,7 +185,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
     public void onBackPressed() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("초기 화면으로 돌아가기");
-        alertBuilder.setMessage("처방전 생성하지 않고 초기 화면으로 돌아가시겠습니까?");
+        alertBuilder.setMessage("처방전을 만들지 않고 초기 화면으로 돌아가시겠습니까?");
         alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
