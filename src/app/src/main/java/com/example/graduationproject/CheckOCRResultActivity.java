@@ -1,7 +1,10 @@
 package com.example.graduationproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -9,7 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.StringJoiner;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
     private TextView tvInfo;
@@ -176,5 +178,28 @@ public class CheckOCRResultActivity extends AppCompatActivity {
             }
             tvPregnantProhibition.setText(sb.toString());
         }
+    }
+
+    // 취소 버튼 이벤트를 통해서 팝업창을 띄우고 초기 화면으로 돌아갈지 선택
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("초기 화면으로 돌아가기");
+        alertBuilder.setMessage("처방전 생성하지 않고 초기 화면으로 돌아가시겠습니까?");
+        alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertBuilder.setNegativeButton("초기 화면으로", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 }
