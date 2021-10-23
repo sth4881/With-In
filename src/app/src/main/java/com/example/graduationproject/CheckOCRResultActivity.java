@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
+    private Button btnConfirm;
+    private Button btnRetake;
+
     private TextView tvInfo;
     private ListView lvInfo;
     private TextView tvAgeProhibition;
@@ -178,6 +183,23 @@ public class CheckOCRResultActivity extends AppCompatActivity {
             }
             tvPregnantProhibition.setText(sb.toString());
         }
+
+        btnConfirm = findViewById(R.id.btnConfirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 처방전 내용을 데이터베이스화하는 메소드 호출
+            }
+        });
+
+        btnRetake = findViewById(R.id.btnRetake);
+        btnRetake.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CheckOCRResultActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // 취소 버튼 이벤트를 통해서 팝업창을 띄우고 초기 화면으로 돌아갈지 선택
