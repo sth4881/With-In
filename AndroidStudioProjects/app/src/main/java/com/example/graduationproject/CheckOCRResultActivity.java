@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
     private Button btnConfirm;
-    private Button btnRetake;
+    private Button btnGoback;
 
     private TextView tvInfo;
     private ListView lvInfo;
@@ -198,37 +198,37 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                 prescriptionData.add(hospital_name); // 의료기관명칭 데이터
                 prescriptionData.add(hospital_call); // 의료기관전화번호 데이터
                 prescriptionData.add(doctor_name); // 처방의료인의성명 데이터
-
             }
         });
 
-        // '재촬영' 버튼을 통해서 처방전을 다시 촬영
-        btnRetake = findViewById(R.id.btnRetake);
-        btnRetake.setOnClickListener(new View.OnClickListener() {
+        // '처음 화면으로' 버튼을 통해서 메인 화면으로 이동
+        btnGoback = findViewById(R.id.btnGoback);
+        btnGoback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CheckOCRResultActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
+                // 아마도 여기서 카메라 관련 기능들을 종료시켜야할듯
+                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    // 취소 버튼 이벤트를 통해서 팝업창을 띄우고 초기 화면으로 돌아갈지 선택
+    // 취소 버튼 이벤트를 통해서 팝업창을 띄우고 처방전을 다시 촬영할지 선택
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("초기 화면으로 돌아가기");
-        alertBuilder.setMessage("처방전을 만들지 않고 초기 화면으로 돌아가시겠습니까?");
+        alertBuilder.setTitle("처방전 재촬영");
+        alertBuilder.setMessage("처방전을 다시 촬영하시겠습니까?");
         alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        alertBuilder.setNegativeButton("초기 화면으로", new DialogInterface.OnClickListener() {
+        alertBuilder.setNegativeButton("다시 촬영하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                Intent intent = new Intent(CheckOCRResultActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
                 startActivity(intent);
             }
         });
