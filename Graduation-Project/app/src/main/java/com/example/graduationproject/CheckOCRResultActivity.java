@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -184,14 +185,24 @@ public class CheckOCRResultActivity extends AppCompatActivity {
             tvPregnantProhibition.setText(sb.toString());
         }
 
+        // '확인' 버튼을 통해서 처방전관리 테이블에 데이터 삽입
         btnConfirm = findViewById(R.id.btnConfirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 처방전 내용을 데이터베이스화하는 메소드 호출
+                ArrayList<String> prescriptionData = new ArrayList<String>();
+                prescriptionData.add(visit_date); // 방문날짜 데이터
+                prescriptionData.add(user_name); // 환자성명 데이터
+                prescriptionData.add(user_age); // 환자나이 데이터
+                prescriptionData.add(hospital_name); // 의료기관명칭 데이터
+                prescriptionData.add(hospital_call); // 의료기관전화번호 데이터
+                prescriptionData.add(doctor_name); // 처방의료인의성명 데이터
+
             }
         });
 
+        // '재촬영' 버튼을 통해서 처방전을 다시 촬영
         btnRetake = findViewById(R.id.btnRetake);
         btnRetake.setOnClickListener(new View.OnClickListener() {
             @Override
