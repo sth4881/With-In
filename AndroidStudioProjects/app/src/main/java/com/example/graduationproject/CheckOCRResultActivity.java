@@ -33,6 +33,16 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
     private ArrayList<ArrayList<String>> ageProhibitionData, combiProhibitionData, pregnantProhibitionData;
 
+    private void insertPrescriptionData(String[] prescriptionData) {
+        PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
+        prescriptionManagementAdapter.create();
+        prescriptionManagementAdapter.open();
+
+        prescriptionManagementAdapter.insert(prescriptionData);
+
+        prescriptionManagementAdapter.close();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,7 +217,11 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         alertBuilder.setPositiveButton("다시 촬영하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+<<<<<<< HEAD
                 Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+=======
+                Intent intent = new Intent(CheckOCRResultActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
+>>>>>>> 025260555daf1e67d6e06be5fda5e4c00ecef0bf
                 startActivity(intent);
             }
         });
