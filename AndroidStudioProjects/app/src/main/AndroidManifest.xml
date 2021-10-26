@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GraduationProject">
         <activity android:name=".CheckOCRResultActivity" />
-        <activity android:name=".PicturePrescriptionAndApplyOCRActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

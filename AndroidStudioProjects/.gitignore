@@ -1,5 +1,7 @@
 *.iml
 .gradle
+# database directory
+/app/src/main/assets/database.db
 /local.properties
 /.idea/caches
 /.idea/libraries

@@ -78,19 +78,19 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btnConfirm"
-        android:text="확인"
+        android:id="@+id/btnCreate"
+        android:text="처방전 생성"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="118dp"
         android:layout_alignParentBottom="true" />
 
     <Button
-        android:id="@+id/btnRetake"
-        android:text="재촬영"
+        android:id="@+id/btnGoMain"
+        android:text="처음 화면으로"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/btnConfirm"
+        android:layout_toRightOf="@+id/btnCreate"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

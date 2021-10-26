@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final Context context;
 
     private static String DB_PATH;
-    private static final String DB_NAME = "carecaredatabase.db";
+    private static final String DB_NAME = "database.db";
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, 1);
