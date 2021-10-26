@@ -3,22 +3,27 @@ package com.example.graduationproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringJoiner;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
-    private Button btnConfirm;
-    private Button btnGoback;
+    private Button btnCreate;
+    private Button btnGoMain;
 
     private TextView tvInfo;
     private ListView lvInfo;
@@ -26,7 +31,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
     //    private TextView tvCombiProhibition;
     private TextView tvPregnantProhibition;
 
-    public ArrayList<ArrayList<String>> ageProhibitionData, combiProhibitionData, pregnantProhibitionData;
+    private ArrayList<ArrayList<String>> ageProhibitionData, combiProhibitionData, pregnantProhibitionData;
 
     // 만 나이 계산 함수
     public static int getAmericanAge(String rrn) {
@@ -69,6 +74,16 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         pregnantProhibitionAdapter.close();
     }
 
+    private void insertPrescriptionData(String[] prescriptionData) {
+        PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
+        prescriptionManagementAdapter.create();
+        prescriptionManagementAdapter.open();
+
+        prescriptionManagementAdapter.insert(prescriptionData);
+
+        prescriptionManagementAdapter.close();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,10 +122,10 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
         // 방문 날짜 데이터 처리 및 표시
         if(visit_date != null) {
-            visit_date = visit_date.replace(" ", "").replace("년", "년 ").replace("월", "월 ");
-            visit_date = visit_date.replace("일", "일 ").replace("-", "").replace("제", "");
+            visit_date = visit_date.replace(" ", "").replace("년", "년 ").replace("월", "월 ").replace("일", "일 ").replace("-", "").replace("제", "");
             sb.append("방문 날짜 : ").append(visit_date).append("\n");
         }
+        String finalVisitDate = visit_date;
 
         // 현재 년도와 user_rrn 정보를 이용한 user_age 처리
         String user_age = Integer.toString(getAmericanAge(user_rrn));
@@ -185,28 +200,49 @@ public class CheckOCRResultActivity extends AppCompatActivity {
             tvPregnantProhibition.setText(sb.toString());
         }
 
-        // '확인' 버튼을 통해서 처방전관리 테이블에 데이터 삽입
-        btnConfirm = findViewById(R.id.btnConfirm);
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
+        // '처방전 생성' 버튼을 통해서 처방전의 제목을 짓고 '처방전관리' 테이블에 데이터 삽입
+        btnCreate = findViewById(R.id.btnCreate);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 처방전 내용을 데이터베이스화하는 메소드 호출
-                ArrayList<String> prescriptionData = new ArrayList<String>();
-//                prescriptionData.add(visit_date); // 방문날짜 데이터
-                prescriptionData.add(user_name); // 환자성명 데이터
-                prescriptionData.add(user_age); // 환자나이 데이터
-                prescriptionData.add(hospital_name); // 의료기관명칭 데이터
-                prescriptionData.add(hospital_call); // 의료기관전화번호 데이터
-                prescriptionData.add(doctor_name); // 처방의료인의성명 데이터
+                LayoutInflater inflater = getLayoutInflater();
+                LinearLayout setTitleLayout = (LinearLayout)inflater.inflate(R.layout.set_title_dialog, null);
+
+                final EditText prescription_title = (EditText)setTitleLayout.findViewById(R.id.setTitle);
+                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(CheckOCRResultActivity.this);
+                alertBuilder.setTitle("처방전 이름 설정");
+                alertBuilder.setView(prescription_title);
+                alertBuilder.setPositiveButton("입력", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 처방전 제목 및 기타 정보들을 이용하여 테이블에 데이터 삽입
+                        String[] prescriptionData = new String[7];
+                        prescriptionData[0] = prescription_title.getText().toString();
+                        prescriptionData[1] = finalVisitDate;
+                        prescriptionData[2] = user_name;
+                        prescriptionData[3] = user_age;
+                        prescriptionData[4] = hospital_name;
+                        prescriptionData[5] = hospital_call;
+                        prescriptionData[6] = doctor_name;
+                        insertPrescriptionData(prescriptionData);
+                    }
+                });
+                alertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
             }
         });
 
         // '처음 화면으로' 버튼을 통해서 메인 화면으로 이동
-        btnGoback = findViewById(R.id.btnGoback);
-        btnGoback.setOnClickListener(new View.OnClickListener() {
+        btnGoMain = findViewById(R.id.btnGoMain);
+        btnGoMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 아마도 여기서 카메라 관련 기능들을 종료시켜야할듯
                 Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -219,17 +255,17 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("처방전 재촬영");
         alertBuilder.setMessage("처방전을 다시 촬영하시겠습니까?");
-        alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        alertBuilder.setNegativeButton("다시 촬영하기", new DialogInterface.OnClickListener() {
+        alertBuilder.setPositiveButton("다시 촬영하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(CheckOCRResultActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
                 startActivity(intent);
+            }
+        });
+        alertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                
             }
         });
         AlertDialog alert = alertBuilder.create();
