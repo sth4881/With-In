@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,16 +33,6 @@ public class CheckOCRResultActivity extends AppCompatActivity {
     private TextView tvPregnantProhibition;
 
     private ArrayList<ArrayList<String>> ageProhibitionData, combiProhibitionData, pregnantProhibitionData;
-
-    private void insertPrescriptionData(String[] prescriptionData) {
-        PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
-        prescriptionManagementAdapter.create();
-        prescriptionManagementAdapter.open();
-
-        prescriptionManagementAdapter.insert(prescriptionData);
-
-        prescriptionManagementAdapter.close();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,14 +155,25 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LayoutInflater inflater = getLayoutInflater();
-                LinearLayout setTitleLayout = (LinearLayout)inflater.inflate(R.layout.set_title_dialog, null);
-
-                final EditText prescription_title = (EditText)setTitleLayout.findViewById(R.id.setTitle);
+//                LayoutInflater inflater = getLayoutInflater();
+//                LinearLayout setTitleLayout = (LinearLayout)inflater.inflate(R.layout.set_title_dialog, null);
+//
+//                final EditText prescription_title = (EditText)setTitleLayout.findViewById(R.id.setTitle);
+                final EditText prescription_title = new EditText(CheckOCRResultActivity.this);
                 final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(CheckOCRResultActivity.this);
-                alertBuilder.setTitle("처방전 이름 설정");
+                alertBuilder.setTitle("처방전 생성");
+                alertBuilder.setMessage("처방전 제목 설정");
+                // 현재 뷰의 참조 여부를 확인 후에 부모 뷰가 존재할 경우 해당 부모 뷰를 삭제
+                if(prescription_title.getParent() != null)
+                    ((ViewGroup) prescription_title.getParent()).removeView(prescription_title);
                 alertBuilder.setView(prescription_title);
-                alertBuilder.setPositiveButton("입력", new DialogInterface.OnClickListener() {
+                alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertBuilder.setNegativeButton("입력", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // 처방전 제목 및 기타 정보들을 이용하여 테이블에 데이터 삽입
@@ -184,12 +186,6 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                         prescriptionData[5] = hospital_call;
                         prescriptionData[6] = doctor_name;
                         insertPrescriptionData(prescriptionData);
-                    }
-                });
-                alertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
                     }
                 });
                 AlertDialog alert = alertBuilder.create();
@@ -214,21 +210,17 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("처방전 재촬영");
         alertBuilder.setMessage("처방전을 다시 촬영하시겠습니까?");
-        alertBuilder.setPositiveButton("다시 촬영하기", new DialogInterface.OnClickListener() {
+        alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-<<<<<<< HEAD
-                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
-=======
-                Intent intent = new Intent(CheckOCRResultActivity.this, PicturePrescriptionAndApplyOCRActivity.class);
->>>>>>> 025260555daf1e67d6e06be5fda5e4c00ecef0bf
-                startActivity(intent);
+
             }
         });
-        alertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+        alertBuilder.setNegativeButton("다시 촬영하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                
+                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
         AlertDialog alert = alertBuilder.create();

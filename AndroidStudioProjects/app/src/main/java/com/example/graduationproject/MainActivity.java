@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 사진 촬영으로 비트맵 이미지 만들기
                 requestTakePictureIntent();
+
                 // 만들어진 비트맵 이미지에 OCR 적용
                 applyOCR();
             }
@@ -123,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 권한 요청 메소드
     public void onRequestPermission() {
         // 카메라 및 외부 저장소 쓰기 권한 명시
         int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -154,12 +158,22 @@ public class MainActivity extends AppCompatActivity {
             } catch(IOException e) {
                 e.printStackTrace();
             }
-            if(imageFile != null) { // 카메라 어플을 통해서 빈 파일에 촬영된 이미지가 저장되었다면
+            // 카메라 어플을 통해서 빈 파일에 촬영된 이미지가 저장되었다면
+            if(imageFile != null) {
                 Uri imageUri = FileProvider.getUriForFile(this, getPackageName(), imageFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
+    }
+
+    // 안드로이드 OS 상에서 이미지를 JSON 형식으로 넘겨주기 위해서
+    // 비트맵 이미지를 Base64 방식으로 인코딩해서 반환해주는 메소드
+    private String getStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArr = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArr, Base64.DEFAULT);
     }
 
     // OCR 적용 메소드
@@ -249,30 +263,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.start();
-    }
-
-    // 취소 버튼 이벤트를 통해서 팝업창을 띄우고 앱을 종료할지 선택
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("애플리케이션 종료");
-        alertBuilder.setMessage("앱을 종료하시겠습니까?");
-        alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        alertBuilder.setNegativeButton("종료", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, "애플리케이션이 종료되었습니다.", Toast.LENGTH_SHORT).show();
-                // 2021.10.26 finishAffinity()가 백 스택에 존재하는 모든 액티비티를 종료시키지만 카메라 어플은 종료되지 않아서 이슈가 발생
-                finishAffinity(); // 백 스택에 존재하는 모든 액티비티 종료
-            }
-        });
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
     }
 
     // 취소 버튼 이벤트를 통해서 팝업창을 띄우고 앱을 종료할지 선택

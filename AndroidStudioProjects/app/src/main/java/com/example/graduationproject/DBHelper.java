@@ -56,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         int size;
         byte[] buffer = new byte[1024];
-        while((size = inputStream.read(buffer)) != 0) {
+        while((size = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, size);
         }
         outputStream.flush();
