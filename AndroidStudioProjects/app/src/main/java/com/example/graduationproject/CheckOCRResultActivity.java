@@ -72,7 +72,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
         // 방문 날짜 데이터 처리 및 표시
         if(visit_date != null) {
-            visit_date = visit_date.replace(" ", "").replace("년", "년 ").replace("월", "월 ").replace("일", "일 ").replace("-", "").replace("제", "");
+            visit_date = visit_date.replace(" ", "").replace("년", "년 ").replace("월", "월 ").replace("-", "").replace("제", "");
             sb.append("방문 날짜 : ").append(visit_date).append("\n");
         }
         String finalVisitDate = visit_date;
@@ -186,6 +186,9 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                         prescriptionData[5] = hospital_call;
                         prescriptionData[6] = doctor_name;
                         insertPrescriptionData(prescriptionData);
+                        // 메인 화면으로 이동
+                        Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 });
                 AlertDialog alert = alertBuilder.create();
