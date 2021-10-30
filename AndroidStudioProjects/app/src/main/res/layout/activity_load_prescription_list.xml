@@ -6,7 +6,7 @@
     tools:context=".LoadPrescriptionListActivity">
 
     <TextView
-        android:id="@+id/tvPrescription"
+        android:id="@+id/tvPrescriptionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="처방전 목록"
@@ -14,10 +14,10 @@
         android:gravity="center"/>
 
     <ListView
-        android:id="@+id/lvPrescription"
+        android:id="@+id/lvPrescriptionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvPrescription"
+        android:layout_below="@id/tvPrescriptionList"
         android:textSize="12sp"/>
 
 </RelativeLayout>
