@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GraduationProject">
+        <activity android:name=".LoadPrescriptionListActivity"></activity>
         <activity android:name=".CheckOCRResultActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,9 +21,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- FileProvider : 내부 저장소에 있는 파일을 다른 어플로부터 임시로 접근할 수 있도록 만들어줌 -->
+        </activity> <!-- FileProvider : 내부 저장소에 있는 파일을 다른 어플로부터 임시로 접근할 수 있도록 만들어줌 -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.graduationproject"
@@ -32,7 +31,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>

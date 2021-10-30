@@ -35,13 +35,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnPicturePrescriptionAndApplyOCR;
+    private Button btnViewPrescription;
 
-    private Button btnCheckPrescription;
     private Button btnMedicine;
 
     private Bitmap bitmapImage;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         onRequestPermission();
 
         // 미구현 버튼
-        btnCheckPrescription = findViewById(R.id.btnCheckPrescription);
+
         btnMedicine = findViewById(R.id.btnMedicine);
 
         // 처방전 촬영 버튼 클릭 이벤트
@@ -72,6 +73,24 @@ public class MainActivity extends AppCompatActivity {
 
                 // 만들어진 비트맵 이미지에 OCR 적용
                 applyOCR();
+            }
+        });
+
+        // 처방전 조회 버튼 클릭 이벤트
+        btnViewPrescription = findViewById(R.id.btnCheckPrescription);
+        btnViewPrescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoadPrescriptionListActivity.class);
+                PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
+                prescriptionManagementAdapter.create();
+                prescriptionManagementAdapter.open();
+
+                ArrayList<String> prescriptionList = prescriptionManagementAdapter.getPrescriptionListData();
+                intent.putExtra("prescriptionList", prescriptionList);
+
+                prescriptionManagementAdapter.close();
+                startActivity(intent);
             }
         });
     }

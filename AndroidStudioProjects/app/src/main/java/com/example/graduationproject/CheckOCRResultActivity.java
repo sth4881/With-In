@@ -3,6 +3,7 @@ package com.example.graduationproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,10 +17,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.StringJoiner;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
@@ -115,7 +118,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         }
 
         // 처방전 내 인식된 정보를 ListView에 표시
-        ArrayAdapter<String > adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicine);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicine);
         lvInfo.setAdapter(adapter);
 
         // 처방전 양식이 아닌 경우 오류가 종료되는 것을 방지
@@ -177,6 +180,10 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // 처방전 제목 및 기타 정보들을 이용하여 테이블에 데이터 삽입
+                        PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
+                        prescriptionManagementAdapter.create();
+                        prescriptionManagementAdapter.open();
+
                         String[] prescriptionData = new String[7];
                         prescriptionData[0] = prescription_title.getText().toString();
                         prescriptionData[1] = finalVisitDate;
@@ -185,10 +192,14 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                         prescriptionData[4] = hospital_name;
                         prescriptionData[5] = hospital_call;
                         prescriptionData[6] = doctor_name;
-                        insertPrescriptionData(prescriptionData);
-                        // 메인 화면으로 이동
-                        Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
-                        startActivity(intent);
+
+                        boolean result = prescriptionManagementAdapter.insertPrescriptionData(prescriptionData);
+                        prescriptionManagementAdapter.close();
+
+                        if(result) {
+                            Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 });
                 AlertDialog alert = alertBuilder.create();
@@ -269,15 +280,5 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         ageProhibitionAdapter.close();
 //        combiProhibitionAdapter.close();
         pregnantProhibitionAdapter.close();
-    }
-
-    private void insertPrescriptionData(String[] prescriptionData) {
-        PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
-        prescriptionManagementAdapter.create();
-        prescriptionManagementAdapter.open();
-
-        prescriptionManagementAdapter.insert(prescriptionData);
-
-        prescriptionManagementAdapter.close();
     }
 }

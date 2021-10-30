@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoadPrescriptionListActivity">
+
+    <TextView
+        android:id="@+id/tvPrescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="처방전 목록"
+        android:textSize="20sp"
+        android:gravity="center"/>
+
+    <ListView
+        android:id="@+id/lvPrescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPrescription"
+        android:textSize="12sp"/>
+
+</RelativeLayout>
