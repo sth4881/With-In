@@ -77,7 +77,6 @@ public class PrescriptionManagementAdapter {
             arr.add(cursor.getString(5)); // 의료기관명칭
             arr.add(cursor.getString(6)); // 의료기관전화번호
             arr.add(cursor.getString(7)); // 처방의료인의성명
-            Log.d("PPAP", cursor.getString(2)+" "+cursor.getString(3)+" "+cursor.getString(4)+" "+cursor.getString(5)+" "+cursor.getString(6)+" "+cursor.getString(7));
             return arr;
         } catch (SQLException sqlException) {
             throw sqlException;
@@ -109,7 +108,7 @@ public class PrescriptionManagementAdapter {
 
             // 결과 성공/실패시 true/false 반환
             long result = db.insert("처방전관리", null, values);
-            if (result == -1) {
+            if(result==-1) {
                 Toast.makeText(mContext.getApplicationContext(), "처방전 생성 실패", Toast.LENGTH_SHORT).show();
                 return false;
             }
