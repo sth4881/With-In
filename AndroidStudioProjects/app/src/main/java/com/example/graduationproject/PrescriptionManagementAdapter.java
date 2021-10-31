@@ -64,12 +64,12 @@ public class PrescriptionManagementAdapter {
         try {
             // 처방전제목이 중복되지 않도록 설계할 것이므로 하나의 튜플 데이터만 불러옴
             String sql = "SELECT * FROM 처방전관리 WHERE 처방전제목='"+prescription_title+"'";
-
             ArrayList<String> arr = new ArrayList<String>();
             
             // 처방전관리 테이블의 '처방전제목', '방문날짜', '환자성명', '환자나이', '의료기관명칭', '의료기관전화번호', '처방의료인의성명' 데이터를 불러옴
             // 2021.10.30 처방전관리 테이블에 저장된 처방전 데이터를 불러오는 과정에서 오류 발생
             Cursor cursor = db.rawQuery(sql, null);
+            cursor.moveToFirst();
             arr.add(prescription_title); // 처방전제목
             arr.add(cursor.getString(2)); // 방문날짜
             arr.add(cursor.getString(3)); // 환자성명
@@ -77,6 +77,7 @@ public class PrescriptionManagementAdapter {
             arr.add(cursor.getString(5)); // 의료기관명칭
             arr.add(cursor.getString(6)); // 의료기관전화번호
             arr.add(cursor.getString(7)); // 처방의료인의성명
+            Log.d("PPAP", cursor.getString(2)+" "+cursor.getString(3)+" "+cursor.getString(4)+" "+cursor.getString(5)+" "+cursor.getString(6)+" "+cursor.getString(7));
             return arr;
         } catch (SQLException sqlException) {
             throw sqlException;

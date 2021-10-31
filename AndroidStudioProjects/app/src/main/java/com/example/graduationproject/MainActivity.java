@@ -81,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
         btnViewPrescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoadPrescriptionListActivity.class);
                 PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
                 prescriptionManagementAdapter.create();
                 prescriptionManagementAdapter.open();
 
-                ArrayList<String> prescriptionList = prescriptionManagementAdapter.getPrescriptionListData();
-                intent.putExtra("prescriptionList", prescriptionList);
+                ArrayList<String> prescription_list = prescriptionManagementAdapter.getPrescriptionListData();
+                Intent intent = new Intent(MainActivity.this, LoadPrescriptionListActivity.class);
+                intent.putExtra("prescription_list", prescription_list);
 
                 prescriptionManagementAdapter.close();
                 startActivity(intent);
