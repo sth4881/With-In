@@ -113,6 +113,24 @@ public class PrescriptionManagementAdapter {
         }
     }
 
+    // OCR 적용 결과로 생성된 데이터들을 약정보표시 테이블에 삽입
+    public void insertMedicineData(ArrayList<String> medicine) {
+        try {
+            long[] resultArr = new long[medicine.size()];
+            for(int i=0; i<medicine.size(); i++) {
+                ContentValues values = new ContentValues();
+                String[] medicineData = medicine.get(i).split(" ");
+                values.put("제품코드", Integer.parseInt(medicineData[0]));
+                values.put("제품이름", medicineData[1]);
+                resultArr[i] = db.insert("약정보표시", null, values);
+            }
+            // 결과 성공/실패시 true/false 반환
+            // resultArr에 속한 모든 원소가 -1이 아닌 경우에만 true 반환
+        } catch (SQLException sqlException) {
+            throw sqlException;
+        }
+    }
+
     public void close() {
         dbHelper.close();
     }
