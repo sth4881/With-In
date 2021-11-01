@@ -67,7 +67,6 @@ public class PrescriptionManagementAdapter {
             ArrayList<String> arr = new ArrayList<String>();
             
             // 처방전관리 테이블의 '처방전제목', '방문날짜', '환자성명', '환자나이', '의료기관명칭', '의료기관전화번호', '처방의료인의성명' 데이터를 불러옴
-            // 2021.10.30 처방전관리 테이블에 저장된 처방전 데이터를 불러오는 과정에서 오류 발생
             Cursor cursor = db.rawQuery(sql, null);
             cursor.moveToFirst();
             arr.add(prescription_title); // 처방전제목
@@ -108,12 +107,7 @@ public class PrescriptionManagementAdapter {
 
             // 결과 성공/실패시 true/false 반환
             long result = db.insert("처방전관리", null, values);
-            if(result==-1) {
-                Toast.makeText(mContext.getApplicationContext(), "처방전 생성 실패", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            Toast.makeText(mContext.getApplicationContext(), "처방전 생성 성공", Toast.LENGTH_SHORT).show();
-            return true;
+            return result != -1;
         } catch (SQLException sqlException) {
             throw sqlException;
         }
