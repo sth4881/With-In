@@ -6,11 +6,54 @@
     android:orientation="vertical"
     tools:context=".LoadPrescriptionActivity">
 
+    <!--처방전 제목 표시-->
     <TextView
-        android:id="@+id/tvPrescription"
+        android:id="@+id/tvPrescriptionTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="22sp"/>
+        android:textSize="24sp"/>
+
+    <!--처방전 내용 표시-->
+    <TextView
+        android:id="@+id/tvPrescriptionContents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18sp"/>
+
+    <!--약 텍스트 표시-->
+    <TextView
+        android:id="@+id/tvMedicineText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="💊 처방 의약품 목록 💉"
+        android:textSize="24sp"/>
+
+    <!--약 목록 표시-->
+    <TextView
+        android:id="@+id/tvMedicineList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18sp" />
+
+    <!--DUR 텍스트 표시-->
+    <TextView
+        android:id="@+id/tvDURText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="⚠ 의약품 안전성 정보(DUR)⚠ "
+        android:textSize="18sp" />
+
+    <!--DUR 내용 표시-->
+    <TextView
+        android:id="@+id/tvDURContents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp" />
 
 </LinearLayout>

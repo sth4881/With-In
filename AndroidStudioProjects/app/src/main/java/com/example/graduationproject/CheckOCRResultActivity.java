@@ -95,30 +95,29 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         tvInfo.setText(sb.toString()); // 처방전 기본 정보 텍스트뷰로 표시
 
         // 약 정보 리스트뷰로 표시
-        ArrayList<String> medicine = new ArrayList<String>();
-        if(medicine1 != null) medicine.add(medicine1);
-        if(medicine2 != null) medicine.add(medicine2);
-        if(medicine3 != null) medicine.add(medicine3);
-        if(medicine4 != null) medicine.add(medicine4);
-        if(medicine5 != null) medicine.add(medicine5);
-        if(medicine6 != null) medicine.add(medicine6);
-        if(medicine7 != null) medicine.add(medicine7);
-        if(medicine8 != null) medicine.add(medicine8);
-        if(medicine9 != null) medicine.add(medicine9);
-        if(medicine10 != null) medicine.add(medicine10);
-        if(medicine11 != null) medicine.add(medicine11);
-        if(medicine12 != null) medicine.add(medicine12);
-        if(medicine13 != null) medicine.add(medicine13);
+        ArrayList<String> medicineData = new ArrayList<String>();
+        if(medicine1 != null) medicineData.add(medicine1);
+        if(medicine2 != null) medicineData.add(medicine2);
+        if(medicine3 != null) medicineData.add(medicine3);
+        if(medicine4 != null) medicineData.add(medicine4);
+        if(medicine5 != null) medicineData.add(medicine5);
+        if(medicine6 != null) medicineData.add(medicine6);
+        if(medicine7 != null) medicineData.add(medicine7);
+        if(medicine8 != null) medicineData.add(medicine8);
+        if(medicine9 != null) medicineData.add(medicine9);
+        if(medicine10 != null) medicineData.add(medicine10);
+        if(medicine11 != null) medicineData.add(medicine11);
+        if(medicine12 != null) medicineData.add(medicine12);
+        if(medicine13 != null) medicineData.add(medicine13);
 
         // 약 정보 데이터베이스 조회에 필요한 코드 목록 생성
-        String[] medicineCode = new String[medicine.size()];
-        for(int i=0; i<medicine.size(); i++) {
-            String[] temp = medicine.get(i).split(" ");
-            medicineCode[i] = temp[0];
+        String[] medicineCode = new String[medicineData.size()];
+        for(int i=0; i<medicineData.size(); i++) {
+            medicineCode[i] = medicineData.get(i).split(" ")[0];
         }
 
         // 처방전 내 인식된 정보를 ListView에 표시
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicine);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicineData);
         lvInfo.setAdapter(adapter);
 
         // 처방전 양식이 아닌 경우 오류가 종료되는 것을 방지
@@ -193,11 +192,10 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                         prescriptionData[5] = hospital_call;
                         prescriptionData[6] = doctor_name;
 
-                        boolean result1 = prescriptionManagementAdapter.insertPrescriptionData(prescriptionData);
-//                        boolean result2 = prescriptionManagementAdapter.insertMedicineData(medicine);
+                        boolean result = prescriptionManagementAdapter.insertPrescriptionData(prescriptionData, medicineData);
                         prescriptionManagementAdapter.close();
 
-                        if(result1) {
+                        if(result) {
                             Toast.makeText(CheckOCRResultActivity.this, "처방전 생성 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
                             startActivity(intent);

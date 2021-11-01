@@ -66,16 +66,13 @@ public class PrescriptionManagementAdapter {
             String sql = "SELECT * FROM 처방전관리 WHERE 처방전제목='"+prescription_title+"'";
             ArrayList<String> arr = new ArrayList<String>();
             
-            // 처방전관리 테이블의 '처방전제목', '방문날짜', '환자성명', '환자나이', '의료기관명칭', '의료기관전화번호', '처방의료인의성명' 데이터를 불러옴
+            // 처방전관리 테이블의 '처방전제목(1)', '방문날짜(2)', '환자성명(3)', '환자나이(4)', '의료기관명칭(5)', '의료기관전화번호(6)', '처방의료인의성명(7)', '약(8~20)' 데이터를 불러옴
             Cursor cursor = db.rawQuery(sql, null);
             cursor.moveToFirst();
-            arr.add(prescription_title); // 처방전제목
-            arr.add(cursor.getString(2)); // 방문날짜
-            arr.add(cursor.getString(3)); // 환자성명
-            arr.add(cursor.getString(4)); // 환자나이
-            arr.add(cursor.getString(5)); // 의료기관명칭
-            arr.add(cursor.getString(6)); // 의료기관전화번호
-            arr.add(cursor.getString(7)); // 처방의료인의성명
+            // '처방전번호' 칼럼을 제외한 나머지 데이터들을 모두 가져옴
+            for(int i=1; i<cursor.getColumnCount(); i++)
+                // 불러온 데이터의 값이 null이 아니라면 arr에 삽입
+                if(cursor.getString(i) != null) arr.add(cursor.getString(i));
             return arr;
         } catch (SQLException sqlException) {
             throw sqlException;
@@ -83,7 +80,7 @@ public class PrescriptionManagementAdapter {
     }
 
     // OCR 적용 결과로 생성된 데이터들을 처방전관리 테이블에 삽입
-    public boolean insertPrescriptionData(String[] prescriptionData) {
+    public boolean insertPrescriptionData(String[] prescriptionData, ArrayList<String> medicineData) {
         try {
             // 방법 1 (성공)
             //        StringBuilder sb = new StringBuilder();
@@ -104,28 +101,13 @@ public class PrescriptionManagementAdapter {
             values.put("의료기관명칭", prescriptionData[4]);
             values.put("의료기관전화번호", prescriptionData[5]);
             values.put("처방의료인의성명", prescriptionData[6]);
+            for(int i=1; i<=medicineData.size(); i++) {
+                values.put("약"+i, medicineData.get(i-1));
+            }
 
             // 결과 성공/실패시 true/false 반환
             long result = db.insert("처방전관리", null, values);
             return result != -1;
-        } catch (SQLException sqlException) {
-            throw sqlException;
-        }
-    }
-
-    // OCR 적용 결과로 생성된 데이터들을 약정보표시 테이블에 삽입
-    public void insertMedicineData(ArrayList<String> medicine) {
-        try {
-            long[] resultArr = new long[medicine.size()];
-            for(int i=0; i<medicine.size(); i++) {
-                ContentValues values = new ContentValues();
-                String[] medicineData = medicine.get(i).split(" ");
-                values.put("제품코드", Integer.parseInt(medicineData[0]));
-                values.put("제품이름", medicineData[1]);
-                resultArr[i] = db.insert("약정보표시", null, values);
-            }
-            // 결과 성공/실패시 true/false 반환
-            // resultArr에 속한 모든 원소가 -1이 아닌 경우에만 true 반환
         } catch (SQLException sqlException) {
             throw sqlException;
         }
