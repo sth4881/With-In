@@ -41,41 +41,34 @@
         android:textSize="18sp"
         android:gravity="center"/>
 
-    <ScrollView
-        android:id="@+id/scroll"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tvDUR">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDUR"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <!--연령금기, 병용금기, 임부금기 약 표시-->
+        <TextView
+            android:id="@+id/tvAgeProhibition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:textSize="12sp"
+            android:gravity="center_horizontal" />
 
-            <!--연령금기, 병용금기, 임부금기 약 표시-->
-            <TextView
-                android:id="@+id/tvAgeProhibition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:gravity="center_horizontal" />
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvCombiProhibition"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:textSize="12sp"-->
+        <!--                android:gravity="center_horizontal" />-->
 
-            <!--            <TextView-->
-            <!--                android:id="@+id/tvCombiProhibition"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textSize="12sp"-->
-            <!--                android:gravity="center_horizontal" />-->
-
-            <TextView
-                android:id="@+id/tvPregnantProhibition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:gravity="center_horizontal" />
-
-        </LinearLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/tvPregnantProhibition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnCreate"

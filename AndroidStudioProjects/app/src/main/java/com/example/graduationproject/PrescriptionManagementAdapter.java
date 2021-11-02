@@ -80,7 +80,7 @@ public class PrescriptionManagementAdapter {
     }
 
     // OCR 적용 결과로 생성된 데이터들을 처방전관리 테이블에 삽입
-    public boolean insertPrescriptionData(String[] prescriptionData, ArrayList<String> medicineData) {
+    public boolean insertPrescriptionData(ArrayList<String> prescriptionData, ArrayList<String> medicineData) {
         try {
             // 방법 1 (성공)
             //        StringBuilder sb = new StringBuilder();
@@ -94,16 +94,15 @@ public class PrescriptionManagementAdapter {
             // 방법 2 (성공)
             ContentValues values = new ContentValues();
             values.put("처방전번호", (byte[]) null);
-            values.put("처방전제목", prescriptionData[0]);
-            values.put("방문날짜", prescriptionData[1]);
-            values.put("환자성명", prescriptionData[2]);
-            values.put("환자나이", prescriptionData[3]);
-            values.put("의료기관명칭", prescriptionData[4]);
-            values.put("의료기관전화번호", prescriptionData[5]);
-            values.put("처방의료인의성명", prescriptionData[6]);
-            for(int i=1; i<=medicineData.size(); i++) {
+            values.put("처방전제목", prescriptionData.get(0));
+            values.put("방문날짜", prescriptionData.get(1));
+            values.put("환자성명", prescriptionData.get(2));
+            values.put("환자나이", prescriptionData.get(3));
+            values.put("의료기관명칭", prescriptionData.get(4));
+            values.put("의료기관전화번호", prescriptionData.get(5));
+            values.put("처방의료인의성명", prescriptionData.get(6));
+            for(int i=1; i<=medicineData.size(); i++)
                 values.put("약"+i, medicineData.get(i-1));
-            }
 
             // 결과 성공/실패시 true/false 반환
             long result = db.insert("처방전관리", null, values);

@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AgeProhibitionAdapter {
@@ -41,12 +42,12 @@ public class AgeProhibitionAdapter {
         return this;
     }
 
-    public ArrayList<ArrayList<String>> getAgeProhibitionData(String[] medicineCode) {
+    public ArrayList<ArrayList<String>> getAgeProhibitionData(ArrayList<String> medicineCode) {
         try {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT * FROM 연령금기 WHERE 제품코드 = ").append(medicineCode[0]);
-            for(int i=1; i<medicineCode.length; i++)
-                sql.append(" OR 제품코드 = ").append(medicineCode[i]);
+            sql.append("SELECT * FROM 연령금기 WHERE 제품코드 = ").append(medicineCode.get(0));
+            for(int i=1; i<medicineCode.size(); i++)
+                sql.append(" OR 제품코드 = ").append(medicineCode.get(i));
             Cursor cursor = db.rawQuery(sql.toString(), null);
 
             // 처방전에 적혀있는 약 중에서 연령금기에 해당하는 약의 개수만큼 생성

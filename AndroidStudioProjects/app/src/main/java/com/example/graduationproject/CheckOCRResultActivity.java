@@ -111,9 +111,9 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         if(medicine13 != null) medicineData.add(medicine13);
 
         // 약 정보 데이터베이스 조회에 필요한 코드 목록 생성
-        String[] medicineCode = new String[medicineData.size()];
+        ArrayList<String> medicineCode = new ArrayList<String>();
         for(int i=0; i<medicineData.size(); i++) {
-            medicineCode[i] = medicineData.get(i).split(" ")[0];
+            medicineCode.add(medicineData.get(i).split(" ")[0]);
         }
 
         // 처방전 내 인식된 정보를 ListView에 표시
@@ -121,8 +121,8 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         lvInfo.setAdapter(adapter);
 
         // 처방전 양식이 아닌 경우 오류가 종료되는 것을 방지
-        if(medicineCode.length>0) {
-            loadDatabaseData(medicineCode);
+        if(medicineCode.size()>0) {
+            loadProhibitionData(medicineCode);
 
             // 연령금기 관련
             sb.setLength(0); // StringBuilder 초기화
@@ -183,14 +183,14 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                         prescriptionManagementAdapter.create();
                         prescriptionManagementAdapter.open();
 
-                        String[] prescriptionData = new String[7];
-                        prescriptionData[0] = prescription_title.getText().toString();
-                        prescriptionData[1] = finalVisitDate;
-                        prescriptionData[2] = user_name;
-                        prescriptionData[3] = user_age;
-                        prescriptionData[4] = hospital_name;
-                        prescriptionData[5] = hospital_call;
-                        prescriptionData[6] = doctor_name;
+                        ArrayList<String> prescriptionData = new ArrayList<String>();
+                        prescriptionData.add(prescription_title.getText().toString());
+                        prescriptionData.add(finalVisitDate);
+                        prescriptionData.add(user_name);
+                        prescriptionData.add(user_age);
+                        prescriptionData.add(hospital_name);
+                        prescriptionData.add(hospital_call);
+                        prescriptionData.add(doctor_name);
 
                         boolean result = prescriptionManagementAdapter.insertPrescriptionData(prescriptionData, medicineData);
                         prescriptionManagementAdapter.close();
@@ -262,7 +262,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         return age;
     }
 
-    private void loadDatabaseData(String[] medicineCode) {
+    private void loadProhibitionData(ArrayList<String> medicineCode) {
         AgeProhibitionAdapter ageProhibitionAdapter = new AgeProhibitionAdapter(getApplicationContext());
         ageProhibitionAdapter.create();
         ageProhibitionAdapter.open();
