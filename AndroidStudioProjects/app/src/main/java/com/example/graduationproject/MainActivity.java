@@ -42,8 +42,7 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
     private Button btnPicturePrescriptionAndApplyOCR;
     private Button btnViewPrescription;
-
-    private Button btnMedicine;
+    private Button btnSearchMedicine;
 
     private Bitmap bitmapImage;
 
@@ -58,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 권한 요청
         onRequestPermission();
-
-        // 미구현 버튼
-
-        btnMedicine = findViewById(R.id.btnMedicine);
 
         // 처방전 촬영 버튼 클릭 이벤트
         btnPicturePrescriptionAndApplyOCR = findViewById(R.id.btnPicturePrescriptionAndOCR);
@@ -90,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("prescription_list", prescription_list);
 
                 prescriptionManagementAdapter.close();
+                startActivity(intent);
+            }
+        });
+
+        // 약 백과사전 버튼 클릭 이벤트
+        btnSearchMedicine = findViewById(R.id.btnSearchMedicine);
+        btnSearchMedicine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoadPrescriptionListActivity.class);
                 startActivity(intent);
             }
         });
