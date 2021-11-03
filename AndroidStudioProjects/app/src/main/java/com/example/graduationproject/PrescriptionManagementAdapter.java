@@ -112,6 +112,15 @@ public class PrescriptionManagementAdapter {
         }
     }
 
+    // 해당 처방전을 처방전 목록에서 삭제
+    public int deletePrescriptionData(String prescription_title) {
+        try {
+            return db.delete("처방전관리", "처방전제목 = ?", new String[] {prescription_title});
+        } catch (SQLException sqlException) {
+            throw sqlException;
+        }
+    }
+
     public void close() {
         dbHelper.close();
     }

@@ -1,7 +1,9 @@
 package com.example.graduationproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -48,6 +50,47 @@ public class LoadPrescriptionListActivity extends AppCompatActivity {
 
                 prescriptionManagementAdapter.close();
                 startActivity(intent);
+            }
+        });
+
+        // 처방전 목록에서 아이템을 길게 누를시 해당 아이템의 삭제 이벤트 발생
+        lvPrescriptionList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                String prescription_title = (String)parent.getItemAtPosition(position);
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(LoadPrescriptionListActivity.this);
+                alertBuilder.setTitle("처방전 삭제");
+                alertBuilder.setMessage("처방전 '"+prescription_title+"'을 삭제하시겠습니까?");
+                alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertBuilder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PrescriptionManagementAdapter prescriptionManagementAdapter = new PrescriptionManagementAdapter(getApplicationContext());
+                        prescriptionManagementAdapter.create();
+                        prescriptionManagementAdapter.open();
+
+                        // 처방전 목록에서 prescription_title과 이름이 같은 처방전을 삭제
+                        prescriptionManagementAdapter.deletePrescriptionData(prescription_title);
+                        // 처방전의 삭제를 통해서 데이터베이스가 갱신되었으므로 처방전 목록 데이터를 다시 받아옴
+                        ArrayList<String> prescription_list = prescriptionManagementAdapter.getPrescriptionListData();
+                        adapter.clear(); // 기존 어댑터에 담긴 내용 삭제
+                        for(int i=0; i<prescription_list.size(); i++)
+                            adapter.add(prescription_list.get(i)); // 어댑터에 아이템을 하나씩 추가
+                        adapter.notifyDataSetChanged(); // 어댑터의 변경사항을 리스트뷰에 반영
+
+                        prescriptionManagementAdapter.close();
+                    }
+                });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+
+                // OnItemClickListener 이벤트를 호출하지 않고 OnItemLongClickListener만 호출
+                return true;
             }
         });
     }

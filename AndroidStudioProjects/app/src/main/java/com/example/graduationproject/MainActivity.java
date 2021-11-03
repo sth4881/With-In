@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         btnSearchMedicine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoadPrescriptionListActivity.class);
+                Intent intent = new Intent(MainActivity.this, SearchMedicineActivity.class);
                 startActivity(intent);
             }
         });
@@ -293,8 +293,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("애플리케이션 종료");
-        alertBuilder.setMessage("앱을 종료하시겠습니까?");
+        alertBuilder.setTitle("애플리케이션을 종료하시겠습니까?");
         alertBuilder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
