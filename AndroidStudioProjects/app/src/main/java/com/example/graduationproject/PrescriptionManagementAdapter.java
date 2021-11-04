@@ -103,7 +103,6 @@ public class PrescriptionManagementAdapter {
 
             // 방법 2 (성공)
             ContentValues values = new ContentValues();
-            values.put("처방전번호", (byte[]) null);
             values.put("처방전제목", prescriptionData.get(0));
             values.put("방문날짜", prescriptionData.get(1));
             values.put("환자성명", prescriptionData.get(2));
