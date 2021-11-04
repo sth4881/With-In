@@ -79,6 +79,16 @@ public class PrescriptionManagementAdapter {
         }
     }
 
+    public boolean checkPrescriptionTitle(String prescription_title) {
+        try {
+            String sql = "SELECT * FROM 처방전관리 WHERE 처방전제목='"+prescription_title+"'";
+            Cursor cursor = db.rawQuery(sql, null);
+            return cursor.getCount() <= 0;
+        } catch (SQLException sqlException) {
+            throw sqlException;
+        }
+    }
+
     // OCR 적용 결과로 생성된 데이터들을 처방전관리 테이블에 삽입
     public boolean insertPrescriptionData(ArrayList<String> prescriptionData, ArrayList<String> medicineData) {
         try {

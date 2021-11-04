@@ -183,24 +183,28 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                         prescriptionManagementAdapter.create();
                         prescriptionManagementAdapter.open();
 
-                        ArrayList<String> prescriptionData = new ArrayList<String>();
-                        prescriptionData.add(prescription_title.getText().toString());
-                        prescriptionData.add(finalVisitDate);
-                        prescriptionData.add(user_name);
-                        prescriptionData.add(user_age);
-                        prescriptionData.add(hospital_name);
-                        prescriptionData.add(hospital_call);
-                        prescriptionData.add(doctor_name);
-
-                        boolean result = prescriptionManagementAdapter.insertPrescriptionData(prescriptionData, medicineData);
-                        prescriptionManagementAdapter.close();
-
-                        if(result) {
-                            Toast.makeText(CheckOCRResultActivity.this, "처방전 생성 성공", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
-                            startActivity(intent);
+                        // 입력받은 처방전 제목이 이미 존재하면 데이터베이스에 삽입하지 않음
+                        if(!prescriptionManagementAdapter.checkPrescriptionTitle(prescription_title.getText().toString())) {
+                            Toast.makeText(CheckOCRResultActivity.this, "처방전 제목을 다르게 설정해주세요", Toast.LENGTH_SHORT).show();
+                            prescriptionManagementAdapter.close();
                         } else {
-                            Toast.makeText(CheckOCRResultActivity.this, "처방전 생성 실패", Toast.LENGTH_SHORT).show();
+                            ArrayList<String> prescriptionData = new ArrayList<String>();
+                            prescriptionData.add(prescription_title.getText().toString());
+                            prescriptionData.add(finalVisitDate);
+                            prescriptionData.add(user_name);
+                            prescriptionData.add(user_age);
+                            prescriptionData.add(hospital_name);
+                            prescriptionData.add(hospital_call);
+                            prescriptionData.add(doctor_name);
+
+                            boolean result = prescriptionManagementAdapter.insertPrescriptionData(prescriptionData, medicineData);
+                            prescriptionManagementAdapter.close();
+
+                            if(result) {
+                                Toast.makeText(CheckOCRResultActivity.this, "처방전 생성 성공", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            } else Toast.makeText(CheckOCRResultActivity.this, "처방전 생성 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
