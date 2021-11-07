@@ -66,11 +66,11 @@ public class PrescriptionManagementAdapter {
             String sql = "SELECT * FROM 처방전관리 WHERE 처방전제목='"+prescription_title+"'";
             ArrayList<String> arr = new ArrayList<String>();
             
-            // 처방전관리 테이블의 '처방전제목(1)', '방문날짜(2)', '환자성명(3)', '환자나이(4)', '의료기관명칭(5)', '의료기관전화번호(6)', '처방의료인의성명(7)', '약(8~20)' 데이터를 불러옴
+            // 처방전관리 테이블의 '처방전제목(0)', '방문날짜(1)', '환자성명(2)', '환자나이(3)', '의료기관명칭(4)', '의료기관전화번호(5)', '처방의료인의성명(6)', '약(7~19)' 데이터를 불러옴
             Cursor cursor = db.rawQuery(sql, null);
             cursor.moveToFirst();
             // '처방전번호' 칼럼을 제외한 나머지 데이터들을 모두 가져옴
-            for(int i=1; i<cursor.getColumnCount(); i++)
+            for(int i=0; i<cursor.getColumnCount(); i++)
                 // 불러온 데이터의 값이 null이 아니라면 arr에 삽입
                 if(cursor.getString(i) != null) arr.add(cursor.getString(i));
             return arr;
