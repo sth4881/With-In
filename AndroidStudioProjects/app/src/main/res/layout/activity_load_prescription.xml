@@ -24,7 +24,7 @@
 
     <!--약 텍스트 표시-->
     <TextView
-        android:id="@+id/tvMedicineText"
+        android:id="@+id/tvPrescriptionMedicineTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -33,7 +33,7 @@
 
     <!--약 목록 표시-->
     <TextView
-        android:id="@+id/tvMedicineList"
+        android:id="@+id/tvPrescriptionMedicineContents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -56,7 +56,7 @@
 
         <!--연령금기-->
         <TextView
-            android:id="@+id/tvAgeProhibitionText"
+            android:id="@+id/tvAgeProhibitionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="연령금기"
@@ -71,7 +71,7 @@
 
         <!--병용금기-->
 <!--        <TextView-->
-<!--            android:id="@+id/tvCombiProhibitionText"-->
+<!--            android:id="@+id/tvCombiProhibitionTitle"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content"-->
 <!--            android:text="연령금기"-->
@@ -86,7 +86,7 @@
 
         <!--임부금기-->
         <TextView
-            android:id="@+id/tvPregnantProhibitionText"
+            android:id="@+id/tvPregnantProhibitionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="임부금기"

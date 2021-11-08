@@ -7,7 +7,7 @@
 
     <!--처방전 텍스트 표시-->
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvOCRResultTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="처 방 전"
@@ -17,18 +17,18 @@
 
     <!--방문한 병원 및 약국 설명 기록-->
     <TextView
-        android:id="@+id/tvInfo"
+        android:id="@+id/tvOCRResultInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvTitle"
+        android:layout_below="@id/tvOCRResultTitle"
         android:textSize="18sp"/>
 
     <!--처방받은 약 목록 표시-->
     <ListView
-        android:id="@+id/lvInfo"
+        android:id="@+id/lvOCRResultMedicine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvInfo"
+        android:layout_below="@id/tvOCRResultInfo"
         android:textSize="12sp" />
 
     <!--DUR 텍스트 표시-->
@@ -36,7 +36,7 @@
         android:id="@+id/tvDUR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lvInfo"
+        android:layout_below="@id/lvOCRResultMedicine"
         android:text="⚠의약품 안전성 정보(DUR)⚠"
         android:textSize="18sp"
         android:gravity="center"/>

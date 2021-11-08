@@ -3,8 +3,6 @@ package com.example.graduationproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,32 +12,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.UUID;
 
 public class CheckOCRResultActivity extends AppCompatActivity {
     private Button btnCreate;
     private Button btnGoMain;
 
-    private TextView tvInfo;
-    private ListView lvInfo;
+    private TextView tvOCRResultInfo;
+    private ListView lvOCRResultMedicine;
     private TextView tvAgeProhibition;
     //    private TextView tvCombiProhibition;
     private TextView tvPregnantProhibition;
@@ -51,8 +36,8 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_ocrresult);
 
-        tvInfo = (TextView)findViewById(R.id.tvInfo);
-        lvInfo = (ListView)findViewById(R.id.lvInfo);
+        tvOCRResultInfo = (TextView)findViewById(R.id.tvOCRResultInfo);
+        lvOCRResultMedicine = (ListView)findViewById(R.id.lvOCRResultMedicine);
         tvAgeProhibition = (TextView)findViewById(R.id.tvAgeProhibition);
 //        tvCombiProhibition = (TextView)findViewById(R.id.tvCombiProhibition);
         tvPregnantProhibition = (TextView)findViewById(R.id.tvPregnantProhibition);
@@ -101,7 +86,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
             sb.append("의료기관 전화번호 : ").append(hospital_call).append("\n");
         if(doctor_name != null)
             sb.append("처방 의료인의 성명 : ").append(doctor_name).append("\n");
-        tvInfo.setText(sb.toString()); // 처방전 기본 정보 텍스트뷰로 표시
+        tvOCRResultInfo.setText(sb.toString()); // 처방전 기본 정보 텍스트뷰로 표시
 
         // 약 정보 리스트뷰로 표시
         ArrayList<String> medicineData = new ArrayList<String>();
@@ -127,7 +112,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
         // 처방전 내 인식된 정보를 ListView에 표시
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, medicineData);
-        lvInfo.setAdapter(adapter);
+        lvOCRResultMedicine.setAdapter(adapter);
 
         // 처방전 양식이 아닌 경우 오류가 종료되는 것을 방지
         if(medicineCode.size()>0) {

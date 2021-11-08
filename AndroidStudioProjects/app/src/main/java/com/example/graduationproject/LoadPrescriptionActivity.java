@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class LoadPrescriptionActivity extends AppCompatActivity {
     private TextView tvPrescriptionTitle;
     private TextView tvPrescriptionContents;
-    private TextView tvMedicineList;
+    private TextView tvPrescriptionMedicineContents;
     private TextView tvAgeProhibitionContents;
     //    private TextView tvCombiProhibitionContents;
     private TextView tvPregnantProhibitionContents;
@@ -25,7 +25,7 @@ public class LoadPrescriptionActivity extends AppCompatActivity {
 
         tvPrescriptionTitle = (TextView)findViewById(R.id.tvPrescriptionTitle);
         tvPrescriptionContents = (TextView)findViewById(R.id.tvPrescriptionContents);
-        tvMedicineList = (TextView)findViewById(R.id.tvMedicineList);
+        tvPrescriptionMedicineContents = (TextView)findViewById(R.id.tvPrescriptionMedicineContents);
         tvAgeProhibitionContents = (TextView)findViewById(R.id.tvAgeProhibitionContents);
 //        tvCombiProhibitionContents = (TextView)findViewById(R.id.tvCombiProhibitionContents);
         tvPregnantProhibitionContents = (TextView)findViewById(R.id.tvPregnantProhibitionContents);
@@ -54,7 +54,7 @@ public class LoadPrescriptionActivity extends AppCompatActivity {
             sb.append(prescription_data.get(i)).append("\n"); // 약1 ~ 약13
             medicineCode.add(prescription_data.get(i).split(" ")[0]); // 제품코드만 받아서 저장
         }
-        tvMedicineList.setText(sb.toString());
+        tvPrescriptionMedicineContents.setText(sb.toString());
 
         // 텍스트뷰에 DUR 정보(연령금기, 임부금기) 불러오기
         loadProhibitionData(medicineCode);
