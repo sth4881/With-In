@@ -26,7 +26,7 @@ public class SearchMedicineActivity extends AppCompatActivity {
         btnSearchMedicine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SearchMedicineActivity.this, DisplaySearchResultActivity.class);
+                Intent intent = new Intent(SearchMedicineActivity.this, DisplayMedicineResultActivity.class);
                 intent.putExtra("medicine_result", etMedicine.getText().toString());
                 startActivity(intent);
             }

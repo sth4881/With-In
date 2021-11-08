@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DisplaySearchResultActivity">
+    tools:context=".DisplayMedicineResultActivity">
 
     <!--약 백과사전 검색 결과-->
     <TextView

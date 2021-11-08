@@ -70,7 +70,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     String encodedImage = getStringFromBitmap(bitmapImage);
                     applyOCR(encodedImage);
                 } catch(Exception e) {
-                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
+                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, DisplayOCRResultActivity.class);
                     intent.putExtra("result", e.toString());
                     startActivity(intent);
                 }
@@ -242,7 +242,7 @@ public class PicturePrescriptionAndApplyOCRActivity extends AppCompatActivity {
                     JSONObject jsonImages = jsonObj.getJSONArray("images").getJSONObject(0);
                     JSONArray jsonFields = jsonImages.getJSONArray("fields");
 
-                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, CheckOCRResultActivity.class);
+                    Intent intent = new Intent(PicturePrescriptionAndApplyOCRActivity.this, DisplayOCRResultActivity.class);
                     for (int i = 0; i < jsonFields.length(); i++) {
                         JSONObject obj = jsonFields.getJSONObject(i);
                         String name = obj.getString("name");

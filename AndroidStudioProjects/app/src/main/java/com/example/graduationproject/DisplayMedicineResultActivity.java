@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class DisplaySearchResultActivity extends AppCompatActivity {
+public class DisplayMedicineResultActivity extends AppCompatActivity {
     private ImageView ivMedicineImage;
 
     private TextView tvMedicineInfo;
@@ -16,7 +16,7 @@ public class DisplaySearchResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_search_result);
+        setContentView(R.layout.activity_display_medicine_result);
 
         ArrayList<String> medicine_data = getIntent().getStringArrayListExtra("medicine_data");
 

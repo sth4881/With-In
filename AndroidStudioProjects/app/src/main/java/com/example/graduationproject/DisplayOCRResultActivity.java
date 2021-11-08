@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class CheckOCRResultActivity extends AppCompatActivity {
+public class DisplayOCRResultActivity extends AppCompatActivity {
     private Button btnCreate;
     private Button btnGoMain;
 
@@ -34,7 +33,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_ocrresult);
+        setContentView(R.layout.activity_display_ocrresult);
 
         tvOCRResultInfo = (TextView)findViewById(R.id.tvOCRResultInfo);
         lvOCRResultMedicine = (ListView)findViewById(R.id.lvOCRResultMedicine);
@@ -155,8 +154,8 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 //                LinearLayout setTitleLayout = (LinearLayout)inflater.inflate(R.layout.set_title_dialog, null);
 //
 //                final EditText prescription_title = (EditText)setTitleLayout.findViewById(R.id.setTitle);
-                final EditText prescription_title = new EditText(CheckOCRResultActivity.this);
-                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(CheckOCRResultActivity.this);
+                final EditText prescription_title = new EditText(DisplayOCRResultActivity.this);
+                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(DisplayOCRResultActivity.this);
                 alertBuilder.setTitle("처방전 생성");
                 alertBuilder.setMessage("처방전의 제목을 설정해주세요.");
                 // 현재 뷰의 참조 여부를 확인 후에 부모 뷰가 존재할 경우 해당 부모 뷰를 삭제
@@ -179,7 +178,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
 
                         // 입력받은 처방전 제목이 이미 존재하면 데이터베이스에 삽입하지 않음
                         if(!prescriptionManagementAdapter.checkPrescriptionTitle(prescription_title.getText().toString())) {
-                            Toast.makeText(CheckOCRResultActivity.this, "처방전 제목을 다르게 설정해주세요", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DisplayOCRResultActivity.this, "처방전 제목을 다르게 설정해주세요", Toast.LENGTH_SHORT).show();
                             prescriptionManagementAdapter.close();
                         } else {
                             ArrayList<String> prescriptionData = new ArrayList<String>();
@@ -195,10 +194,10 @@ public class CheckOCRResultActivity extends AppCompatActivity {
                             prescriptionManagementAdapter.close();
 
                             if(result) {
-                                Toast.makeText(CheckOCRResultActivity.this, "처방전 생성 성공", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                                Toast.makeText(DisplayOCRResultActivity.this, "처방전 생성 성공", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(DisplayOCRResultActivity.this, MainActivity.class);
                                 startActivity(intent);
-                            } else Toast.makeText(CheckOCRResultActivity.this, "처방전 생성 실패", Toast.LENGTH_SHORT).show();
+                            } else Toast.makeText(DisplayOCRResultActivity.this, "처방전 생성 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -212,7 +211,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         btnGoMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                Intent intent = new Intent(DisplayOCRResultActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -233,7 +232,7 @@ public class CheckOCRResultActivity extends AppCompatActivity {
         alertBuilder.setNegativeButton("다시 촬영하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(CheckOCRResultActivity.this, MainActivity.class);
+                Intent intent = new Intent(DisplayOCRResultActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
