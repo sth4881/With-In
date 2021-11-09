@@ -11,22 +11,50 @@
         android:id="@+id/tvSearchResultTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="36dp"
         android:text="약 백과사전 검색 결과"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:gravity="center"/>
 
     <ImageView
         android:id="@+id/ivMedicineImage"
-        android:layout_width="240dp"
-        android:layout_height="180dp"
-        android:layout_gravity="center"/>
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center" />
 
     <TextView
-        android:id="@+id/tvMedicineInfo"
+        android:id="@+id/tvMedicineName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:textSize="18sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvMedicineEffect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvMedicineManual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvMedicineWarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvMedicineSideEffect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:gravity="center" />
 
 </LinearLayout>

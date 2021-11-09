@@ -43,10 +43,10 @@ public class MedicineManagementAdapter {
         String sql = "SELECT * FROM 약백과사전 WHERE 제품명='"+medicineInput+"' OR 제품코드='"+medicineInput+"'";
         ArrayList<String> arr = new ArrayList<String>();
 
-        // 약백과사전의 '업체명(0)', '제품명(1)', '제품코드(2)', '효능효과(3)', '사용법용량(4)', '주의사항(5)', '부작용(6)', '이미지(7)' 데이터를 불러옴
+        // 약백과사전의 '제품명(1)', '제품코드(2)', '효능∙효과(3)', '사용법∙용량(4)', '주의사항(5)', '부작용(6)', '이미지(7)' 데이터를 불러옴
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
-        for(int i=0; i<cursor.getColumnCount(); i++)
+        for(int i=1; i<cursor.getColumnCount(); i++)
             arr.add(cursor.getString(i));
         return arr;
     }
