@@ -46,8 +46,10 @@ public class MedicineManagementAdapter {
         // 약백과사전의 '제품명(1)', '제품코드(2)', '효능∙효과(3)', '사용법∙용량(4)', '주의사항(5)', '부작용(6)', '이미지(7)' 데이터를 불러옴
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
-        for(int i=1; i<cursor.getColumnCount(); i++)
-            arr.add(cursor.getString(i));
+        if(cursor.getCount()>0) {
+            for(int i=1; i<cursor.getColumnCount(); i++)
+                arr.add(cursor.getString(i));
+        }
         return arr;
     }
 

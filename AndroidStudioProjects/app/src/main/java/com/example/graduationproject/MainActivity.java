@@ -106,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder.setNegativeButton("종료", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, "애플리케이션이 종료되었습니다.", Toast.LENGTH_SHORT).show();
-                // 2021.10.26 finishAffinity()가 백 스택에 존재하는 모든 액티비티를 종료시키지만 카메라 어플은 종료되지 않아서 이슈가 발생
                 finishAffinity(); // 백 스택에 존재하는 모든 액티비티 종료
             }
         });
