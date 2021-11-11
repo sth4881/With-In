@@ -53,6 +53,16 @@ public class MedicineManagementAdapter {
         return arr;
     }
 
+    public boolean checkMedicineData(String medicineInput) {
+        try {
+            String sql = "SELECT * FROM 약백과사전 WHERE 제품명='"+medicineInput+"' OR 제품코드='"+medicineInput+"'";
+            Cursor cursor = db.rawQuery(sql, null);
+            return cursor.getCount() > 0;
+        } catch (SQLException sqlException) {
+            throw sqlException;
+        }
+    }
+
     public void close() {
         dbHelper.close();
     }

@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GraduationProject">
-        <activity android:name=".DisplayNoneResultActivity"></activity>
         <activity android:name=".DisplayMedicineResultActivity" />
         <activity android:name=".PicturePrescriptionAndApplyOCRActivity" />
         <activity android:name=".SearchMedicineActivity" />

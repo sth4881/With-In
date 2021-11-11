@@ -179,7 +179,6 @@ public class DisplayOCRResultActivity extends AppCompatActivity {
                         // 입력받은 처방전 제목이 이미 존재하면 데이터베이스에 삽입하지 않음
                         if(!prescriptionManagementAdapter.checkPrescriptionTitle(prescription_title.getText().toString())) {
                             Toast.makeText(DisplayOCRResultActivity.this, "처방전 제목을 다르게 설정해주세요", Toast.LENGTH_SHORT).show();
-                            prescriptionManagementAdapter.close();
                         } else {
                             ArrayList<String> prescriptionData = new ArrayList<String>();
                             prescriptionData.add(prescription_title.getText().toString());
