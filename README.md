@@ -15,4 +15,4 @@
 | Participants | Roles | Skills |
 |:------------:|:-----:|:------:|
 | 송진호 | Naver CLOVA OCR API 적용 & 생성한 처방전 데이터를 DB에 저장하는 기능 구현 | Java, Python, Spring 4.3, Node.js(Express.js), Flask, Oracle(PL/SQL), MySQL, SQLite3 |
-| 류준형 | 의약품개요정보(e약은요) API 적용 | C, Java, Javascript, MySQL, PHP, Python, Flask, SQLite3 |
+| 류준형 | 의약품개요정보(e약은요) API 적용 | C, Java, Javascript(jQuery), MySQL, PHP, Python(NumPy, Matplotlib, TensorFlow-Keras), Flask, SQLite3 |
