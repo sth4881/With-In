@@ -1,4 +1,4 @@
-# 💊 Naver CLOVA OCR API를 이용한 처방전 관리 및 의약품 정보 열람 서비스
+# 💊 OCR을 활용한 처방전 관리 및 의약품 정보 열람 서비스
 
 ### 🎯 주요 기능
 - 처방받은 의약품 및 건강보험심사평가원에 등록된 **약의 성분과 효능 및 주의사항을 제공**
@@ -13,7 +13,7 @@
 - Android OS(Java)
 - Naver CLOVA OCR API
 - Postman
-- SQLite
+- SQLite3
 
 ### 🤝 팀 구성
 | Participants | Roles | Skills |
